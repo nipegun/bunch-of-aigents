@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block vTitle %}Log in - Bunch of AIgents{% endblock %}
+
+{% block vBody %}
+<div class="login-page">
+  <div class="login-box">
+    {% if vError == 'bad_credentials' %}
+      <div class="notice notice-error" data-i18n="login.badCredentials">
+        That email address and password do not match.
+      </div>
+    {% elif vError == 'too_many_attempts' %}
+      <div class="notice notice-error" data-i18n="login.tooManyAttempts">
+        Too many failed attempts. Wait fifteen minutes and try again.
+      </div>
+    {% endif %}
+
+    <form method="post" class="panel login-panel" id="vLoginForm">
+      <!-- The name is the form's own header, not a separate block floating
+           above it: one card, with its title inside. -->
+      <header class="login-header">
+        <img class="brand-logo" alt=""
+             src="{{ url_for('static', filename='img/boa.svg') }}">
+        <span class="brand-name">Bunch of AIgents</span>
+      </header>
+
+      <div class="login-body">
+        <div class="field">
+          <label for="vEmailInput" data-i18n="login.email">Email</label>
+          <input type="email" id="vEmailInput" name="email" autocomplete="username"
+                 required autofocus>
+        </div>
+        <div class="field">
+          <label for="vPasswordInput" data-i18n="login.password">Password</label>
+          <input type="password" id="vPasswordInput" name="password"
+                 autocomplete="current-password" required>
+        </div>
+
+        <div class="login-actions">
+          <button type="submit" class="button button-primary" id="vLoginButton"
+                  data-i18n="login.submit">Log in</button>
+        </div>
+
+        <p class="field-hint login-hint" data-i18n="login.hint">
+          The password for logging in was generated during installation and
+          saved in:
+        </p>
+        <!-- On its own line, and outside the translated sentence: a path
+             wrapped into the middle of a paragraph is a path somebody
+             mistypes. It is the same in every language, so it is written here
+             and not in the fourteen translation files. -->
+        <p class="field-hint login-hint-path"><code>/opt/boa/logs/install.log</code></p>
+      </div>
+
+      <!-- Language codes rather than language names: the code is what somebody
+           looking for their own language recognises fastest here, and a
+           fourteen-name list in a dropdown claims more width than the card
+           has to spare. The full names are on the settings page, where there
+           is room for them. -->
+      <footer class="login-footer">
+        <label class="sr-only" for="vLoginLanguageInput"
+               data-i18n="settings.language">Language</label>
+        <select id="vLoginLanguageInput" class="login-language">
+          <option value="de-DE">de-DE</option>
+          <option value="en-GB">en-GB</option>
+          <option value="en-US">en-US</option>
+          <option value="es-AR">es-AR</option>
+          <option value="es-ES">es-ES</option>
+          <option value="fr-FR">fr-FR</option>
+          <option value="hi-IN">hi-IN</option>
+          <option value="it-IT">it-IT</option>
+          <option value="ja-JP">ja-JP</option>
+          <option value="ko-KR">ko-KR</option>
+          <option value="pt-BR">pt-BR</option>
+          <option value="pt-PT">pt-PT</option>
+          <option value="ru-RU">ru-RU</option>
+          <option value="zh-CN">zh-CN</option>
+        </select>
+      </footer>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block vScripts %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}

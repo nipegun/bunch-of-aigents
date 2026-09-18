@@ -1,0 +1,11 @@
+{
+  "provider": "inception",
+  "documentation": "https://docs.inceptionlabs.ai/get-started/models",
+  "models": [
+    {
+      "id": "mercury-2",
+      "context": "125K",
+      "note": "$0.25 in / $0.75 out per Mtok"
+    }
+  ]
+}

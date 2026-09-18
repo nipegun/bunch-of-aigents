@@ -1,0 +1,29 @@
+{% extends "app_base.html" %}
+{% block vTitle %}Tools - Bunch of AIgents{% endblock %}
+
+{% block vMain %}
+<div class="page-header">
+  <h1 class="page-title" data-i18n="tools.title">Tools</h1>
+</div>
+
+<div class="panel">
+  <p class="panel-hint" data-i18n="tools.hint">
+    Every .py file in /opt/boa/tools/ that declares a tool interface. Only root
+    can write that directory, because the application imports these files as
+    code. Which agent may use which tool is set on each agent's page.
+  </p>
+</div>
+
+<div id="vToolErrors"></div>
+
+<!-- One tab per family, built from what is installed: the families are
+     whatever is in /opt/boa/tools/, so they cannot be written out here. The
+     open one lives in the URL, like every other set of tabs in the
+     application. -->
+<nav class="tabs" id="vToolTabs" role="tablist"></nav>
+<div id="vToolList"></div>
+{% endblock %}
+
+{% block vScripts %}
+<script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+{% endblock %}

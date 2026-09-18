@@ -1,0 +1,32 @@
+{
+  "id": "__AGENT_ID__",
+  "name": "__AGENT_NAME__",
+  "description": "__AGENT_DESCRIPTION__",
+  "system_user": "agent-__AGENT_ID__",
+  "home": "/opt/boa/agents/__AGENT_ID__",
+  "enabled": true,
+  "is_orchestrator": __AGENT_IS_ORCHESTRATOR__,
+  "created_at": "__AGENT_CREATED_AT__",
+  "provider": {
+    "name": "ollama",
+    "model": "",
+    "base_url": "",
+    "api_key_ref": null
+  },
+  "limits": {
+    "max_tokens_per_run": 16384,
+    "max_steps_per_run": 25,
+    "timeout_seconds": 300,
+    "max_runs_per_day": 48
+  },
+  "tools": [
+    "kanban.add_card",
+    "kanban.move_card",
+    "kanban.delete_card",
+    "kanban.list_cards",
+    "kanban.assign_card"
+  ],
+  "channels": [],
+  "skills": [],
+  "kanban_enabled": true
+}

@@ -1,0 +1,76 @@
+{
+  "provider": "ollama",
+  "documentation": "https://ollama.com/library",
+  "note": "Only models you have actually pulled will answer. Check with `ollama list` on the machine running it.",
+  "models": [
+    {
+      "id": "gpt-oss:20b"
+    },
+    {
+      "id": "gpt-oss:120b"
+    },
+    {
+      "id": "granite4.2:3b"
+    },
+    {
+      "id": "granite4.2:8b"
+    },
+    {
+      "id": "granite4.2:30b"
+    },
+    {
+      "id": "deepseek-v4-flash"
+    },
+    {
+      "id": "deepseek-v4-pro"
+    },
+    {
+      "id": "gemma4"
+    },
+    {
+      "id": "glm-5.1"
+    },
+    {
+      "id": "glm-5.2"
+    },
+    {
+      "id": "glm-5.3-flash"
+    },
+    {
+      "id": "kimi-k2.6"
+    },
+    {
+      "id": "kimi-k3"
+    },
+    {
+      "id": "laguna-s-2.1"
+    },
+    {
+      "id": "laguna-xs-2.1"
+    },
+    {
+      "id": "minimax-m3"
+    },
+    {
+      "id": "mistral-medium-3.5"
+    },
+    {
+      "id": "muse-glimmer"
+    },
+    {
+      "id": "nemotron3"
+    },
+    {
+      "id": "nemotron-3.5-lightning"
+    },
+    {
+      "id": "qwen3.6"
+    },
+    {
+      "id": "qwen3.8"
+    },
+    {
+      "id": "qwen3.8-flash-next"
+    }
+  ]
+}

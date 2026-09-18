@@ -1,0 +1,28 @@
+#!/sbin/openrc-run
+
+# Bunch of AIgents - the application's own TLS proxy.
+#
+# This is the only component listening on a port. It terminates TLS and reads
+# the PROXY header the machine's HAProxy sends, which gunicorn cannot do:
+# those bytes arrive before the handshake.
+#
+# In "direct" mode it binds 80 and 443 as the unprivileged `boa` user. The
+# systemd unit grants that with AmbientCapabilities=CAP_NET_BIND_SERVICE;
+# OpenRC has no equivalent, so the installer puts the capability on the
+# haproxy binary itself with setcap. It allows binding a low port and nothing
+# else.
+
+name="boa-proxy"
+description="Bunch of AIgents - TLS proxy"
+
+# -db keeps haproxy in the foreground, which is what a supervisor wants.
+command="/usr/sbin/haproxy"
+command_args="-f /opt/boa/config/haproxy.cfg -db"
+command_user="boa:boa"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+
+depend() {
+  need net boa-web
+}

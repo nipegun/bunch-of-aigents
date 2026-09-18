@@ -1,0 +1,23 @@
+#!/sbin/openrc-run
+
+# Bunch of AIgents - long-polls Telegram and routes each message to an agent.
+
+name="boa-telegram"
+description="Bunch of AIgents - Telegram listener"
+
+command="/opt/boa/venv/bin/python3"
+command_args="-m backend.core.telegram_listener"
+command_user="boa:boa"
+directory="/opt/boa/webapp"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+export PYTHONPATH=/opt/boa/webapp
+export BOA_BASE_DIR=/opt/boa
+
+depend() {
+  need net boa-exec
+}

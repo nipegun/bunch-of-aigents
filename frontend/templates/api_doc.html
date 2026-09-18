@@ -1,0 +1,112 @@
+{# The layout is chosen by the view: the application frame when there is a
+   session, a bare page when there is not. #}
+{% extends vLayout|default("base.html") %}
+{% block vTitle %}API documentation - Bunch of AIgents{% endblock %}
+
+{# Every piece of English here carries a data-i18n key put on the spec by
+   fAnnotateSpecForTranslation, so the page follows the language chosen in
+   Settings like every other page. The English written in stays as the
+   fallback: a key with no translation is left alone by fApplyTranslations,
+   which is also what makes en-US work without loading anything. #}
+{% block vMain %}
+<div class="api-doc">
+  <div class="page-header">
+    <h1 class="page-title">{{ dSpec.info.title }}</h1>
+    <span class="tag">v{{ dSpec.info.version }}</span>
+  </div>
+
+  <div class="panel">
+    <p class="panel-hint api-doc-intro"
+       data-i18n="{{ dSpec.info['x-i18n'] }}">{{ dSpec.info.description }}</p>
+    {# Inside the frame the sidebar is the way back, so the link would be a
+       second one pointing at the same place. #}
+    <p><a href="/api/doc/openapi.json">openapi.json</a>{% if vLayout != 'app_base.html' %} &middot; <a href="/" data-i18n="apidoc.backToApp">Back to the application</a>{% endif %}</p>
+  </div>
+
+  {% for dTag in dSpec.tags %}
+    {% set vTagName = dTag.name %}
+    {% set lTagPaths = [] %}
+    {% for vPath, dMethods in dSpec.paths.items() %}
+      {% for vMethod, dOperation in dMethods.items() %}
+        {% if vTagName in dOperation.tags %}
+          {% set _ = lTagPaths.append((vPath, vMethod, dOperation)) %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+
+    {% if lTagPaths %}
+    <div class="panel">
+      <h2 class="panel-title" data-i18n="{{ dTag['x-i18n'] }}">{{ vTagName }}</h2>
+      <p class="panel-hint" data-i18n="{{ dTag['x-i18n-description'] }}">{{ dTag.description }}</p>
+
+      {% for vPath, vMethod, dOperation in lTagPaths %}
+      <div class="endpoint">
+        <div class="endpoint-header">
+          <span class="endpoint-method" data-method="{{ vMethod }}">{{ vMethod }}</span>
+          <span class="endpoint-path">{{ vPath }}</span>
+        </div>
+        <div class="endpoint-body">
+          <p class="endpoint-summary"><strong data-i18n="{{ dOperation['x-i18n-summary'] }}">{{ dOperation.summary }}</strong></p>
+          <p data-i18n="{{ dOperation['x-i18n-description'] }}">{{ dOperation.description }}</p>
+
+          {% if dOperation.parameters %}
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th data-i18n="apidoc.parameter">Parameter</th>
+                <th data-i18n="apidoc.in">In</th>
+                <th data-i18n="apidoc.type">Type</th>
+                <th data-i18n="apidoc.description">Description</th>
+              </tr></thead>
+              <tbody>
+                {% for dParameter in dOperation.parameters %}
+                <tr>
+                  <td><code>{{ dParameter.name }}</code>{% if dParameter.required %} *{% endif %}</td>
+                  <td>{{ dParameter.in }}</td>
+                  <td>{{ dParameter.schema.type }}</td>
+                  <td{% if dParameter['x-i18n'] %} data-i18n="{{ dParameter['x-i18n'] }}"{% endif %}>{{ dParameter.description or "" }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
+
+          {% if dOperation.requestBody %}
+          {# The schema itself is not translated: it is the shape of the JSON
+             this endpoint takes, and its field names are en-US. #}
+          <p class="endpoint-label"><strong data-i18n="apidoc.requestBody">Request body</strong></p>
+          <pre class="json">{{ dOperation.requestBody.content['application/json'].schema | tojson(indent=2) }}</pre>
+          {% endif %}
+
+          <p class="endpoint-label"><strong data-i18n="apidoc.responses">Responses</strong></p>
+          <div class="table-wrap">
+            <table>
+              <tbody>
+                {% for vCode, dResponse in dOperation.responses.items() %}
+                <tr><td><code>{{ vCode }}</code></td><td{% if dResponse['x-i18n'] %} data-i18n="{{ dResponse['x-i18n'] }}"{% endif %}>{{ dResponse.description }}</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}
+
+{# The test has to go INSIDE the block: a block is declared whether or not the
+   `if` around it is taken, so wrapping the block itself would load the script
+   for anonymous readers too - and it would ask for a list of agents they are
+   not allowed to have. #}
+{% block vScripts %}
+{# Outside the test: the colouring is part of reading the page, and an
+   anonymous reader gets the same page. It asks the server for nothing. #}
+<script src="{{ url_for('static', filename='js/jsonhighlight.js') }}"></script>
+{% if vLayout == 'app_base.html' %}
+<script src="{{ url_for('static', filename='js/apidoc.js') }}"></script>
+{% endif %}
+{% endblock %}

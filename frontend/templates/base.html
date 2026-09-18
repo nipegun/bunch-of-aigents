@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8">
+  <!-- width=device-width is what makes every mobile rule below apply at all.
+       No user-scalable=no and no maximum-scale: the user must be able to zoom. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block vTitle %}Bunch of AIgents{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <!-- In the head and not deferred: it adds the chosen theme's stylesheet, and
+       it has to do it before the first paint or every page would flash in the
+       default palette first. -->
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+  <!-- The compact mark: the shield with one robot in it. The full logo, with
+       the whole bunch, is in the sidebar, where there is room to read it. -->
+  <link rel="icon" type="image/svg+xml"
+        href="{{ url_for('static', filename='img/favicon.svg') }}">
+</head>
+<body>
+{# `vMain` is the page's own content and `vBody` the whole document body.
+   Both layouts expose `vMain`, so a page that fills it in can be rendered
+   either inside the application frame or on its own - which is what lets the
+   API documentation sit in the frame for a signed-in reader and stand alone
+   for an anonymous one, from one template. #}
+{% block vBody %}
+<div class="main">{% block vMain %}{% endblock %}</div>
+{% endblock %}
+<script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+<script src="{{ url_for('static', filename='js/api.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dialog.js') }}"></script>
+{% block vScripts %}{% endblock %}
+</body>
+</html>

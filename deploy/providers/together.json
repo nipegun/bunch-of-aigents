@@ -1,0 +1,48 @@
+{
+  "provider": "together",
+  "documentation": "https://docs.together.ai/docs/serverless/models",
+  "models": [
+    {
+      "id": "openai/gpt-oss-20b",
+      "label": "gpt-oss-20b",
+      "context": "128K",
+      "note": "$0.03 in / $0.13 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "label": "gpt-oss-120b",
+      "context": "128K",
+      "note": "$0.037 in / $0.17 out per Mtok"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Pro",
+      "label": "DeepSeek-V4-Pro"
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M3",
+      "label": "MiniMax-M3"
+    },
+    {
+      "id": "zai-org/GLM-5.2",
+      "label": "GLM-5.2"
+    },
+    {
+      "id": "moonshotai/Kimi-K3",
+      "label": "Kimi-K3",
+      "context": "1M",
+      "note": "$3 in / $15 out per Mtok"
+    },
+    {
+      "id": "Qwen/Qwen3.5-9B",
+      "label": "Qwen3.5-9B",
+      "context": "256K",
+      "note": "$0.1 in / $0.15 out per Mtok"
+    },
+    {
+      "id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "label": "nemotron-3-ultra-550b-a55b",
+      "context": "256K",
+      "note": "$0.5 in / $2.2 out per Mtok"
+    }
+  ]
+}

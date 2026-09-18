@@ -1,0 +1,32 @@
+#!/sbin/openrc-run
+
+# Bunch of AIgents - the daemon agents talk to.
+#
+# It holds the kanban database and the channel credentials on behalf of agents
+# that may touch neither, and it runs as `boa` with no privilege of its own.
+
+name="boa-agent-api"
+description="Bunch of AIgents - Agent API"
+
+command="/opt/boa/venv/bin/python3"
+command_args="-m backend.core.agent_api"
+command_user="boa:boa"
+directory="/opt/boa/webapp"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+export PYTHONPATH=/opt/boa/webapp
+export BOA_BASE_DIR=/opt/boa
+
+depend() {
+  need net
+}
+
+start_pre() {
+  # Owned by the service user on purpose: the process creates its own socket
+  # in here, and a directory root owned would be one it cannot write to.
+  checkpath --directory --mode 0755 --owner boa:boa /run/boa-agent
+}

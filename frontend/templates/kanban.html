@@ -1,0 +1,82 @@
+{% extends "app_base.html" %}
+{% block vTitle %}Kanban - Bunch of AIgents{% endblock %}
+
+{% block vMain %}
+<div class="page-header">
+  <h1 class="page-title" data-i18n="kanban.title">Kanban</h1>
+  <button type="button" class="button" id="vRefreshBoardButton" data-i18n="common.refresh">Refresh</button>
+</div>
+
+<!-- The tab in the URL, so a reload, a bookmark and the back button all keep
+     the one the user was on. Same as Settings, for the same reason. -->
+<nav class="tabs" id="vKanbanTabs" role="tablist">
+  <button type="button" class="tab" role="tab" data-tab="board"
+          data-i18n="kanban.tabBoard">Board</button>
+  <button type="button" class="tab" role="tab" data-tab="new"
+          data-i18n="kanban.tabNew">Create card</button>
+</nav>
+
+<section class="tab-panel" data-panel="new" hidden>
+<div class="panel">
+  <h2 class="panel-title" data-i18n="kanban.addTitle">Add a card</h2>
+  <p class="panel-hint" data-i18n="kanban.addHint">
+    A card you add is created as the user, so any agent you assign it to can
+    move it.
+  </p>
+  <form id="vAddCardForm">
+    <div class="field-row">
+      <div class="field">
+        <label for="vCardTitleInput" data-i18n="kanban.cardTitle">Title</label>
+        <input type="text" id="vCardTitleInput" required>
+      </div>
+      <div class="field">
+        <label for="vCardOwnerInput" data-i18n="kanban.cardOwner">Assign to</label>
+        <select id="vCardOwnerInput"></select>
+        <!-- Filled in by the page when the chosen agent cannot read the board. -->
+        <p class="field-warning" id="vOwnerWarning" hidden></p>
+      </div>
+    </div>
+    <!-- A title alone tells an agent what the card is called, not what to do
+         about it. The card has always had a body; this is where it is written. -->
+    <div class="field">
+      <label for="vCardBodyInput" data-i18n="kanban.cardBody">What to do</label>
+      <textarea id="vCardBodyInput" rows="3" spellcheck="false"></textarea>
+      <p class="field-hint" data-i18n="kanban.cardBodyHint">
+        The agent reads this along with the title. Optional, but a card assigned
+        to an agent with no instructions leaves it guessing.
+      </p>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="vCardWhenInput" data-i18n="kanban.cardWhen">When</label>
+        <!-- Soonest first: straight away, whenever the agent next wakes on
+             its own, or at a time you pick. -->
+        <select id="vCardWhenInput">
+          <option value="now" data-i18n="kanban.whenNow">Immediately</option>
+          <option value="wake" data-i18n="kanban.whenWake">When the agent wakes up</option>
+          <option value="at" data-i18n="kanban.whenAt">Schedule for a given time</option>
+        </select>
+        <p class="field-hint" data-i18n="kanban.cardWhenHint">
+          Immediately wakes the agent as soon as the card is saved. When the
+          agent wakes up leaves the card waiting for its next run. Times are
+          UTC, and a busy agent starts as soon as it is free.
+        </p>
+      </div>
+      <div class="field" id="vCardAtField" hidden>
+        <label for="vCardAtInput" data-i18n="kanban.cardAt">Time (UTC)</label>
+        <input type="datetime-local" id="vCardAtInput">
+      </div>
+    </div>
+    <button type="submit" class="button button-primary" data-i18n="kanban.addButton">Add card</button>
+  </form>
+</div>
+</section>
+
+<section class="tab-panel" data-panel="board" hidden>
+  <div class="board" id="vBoard"></div>
+</section>
+{% endblock %}
+
+{% block vScripts %}
+<script src="{{ url_for('static', filename='js/kanban.js') }}"></script>
+{% endblock %}

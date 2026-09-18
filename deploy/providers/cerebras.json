@@ -1,0 +1,9 @@
+{
+  "provider": "cerebras",
+  "documentation": "https://inference-docs.cerebras.ai/models/overview",
+  "models": [
+    {
+      "id": "gpt-oss-120b"
+    }
+  ]
+}

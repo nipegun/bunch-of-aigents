@@ -1,0 +1,50 @@
+{
+  "provider": "anthropic",
+  "documentation": "https://docs.anthropic.com/en/docs/about-claude/models",
+  "models": [
+    {
+      "id": "claude-fable-5",
+      "context": "1M",
+      "note": "$10 in / $50 out per Mtok"
+    },
+    {
+      "id": "claude-opus-5",
+      "context": "1M",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "claude-sonnet-5",
+      "context": "1M",
+      "note": "$2 in / $10 out per Mtok"
+    },
+    {
+      "id": "claude-opus-4-8",
+      "context": "1M",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "claude-opus-4-7",
+      "context": "1M",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "claude-opus-4-6",
+      "context": "1M",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "claude-opus-4-5-20251101"
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "context": "1M",
+      "note": "$3 in / $15 out per Mtok"
+    },
+    {
+      "id": "claude-haiku-4-5-20251001"
+    },
+    {
+      "id": "claude-sonnet-4-5-20250929"
+    }
+  ]
+}

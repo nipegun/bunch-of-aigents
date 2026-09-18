@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block vBody %}
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <a class="brand-link" href="/" title="Bunch of AIgents">
+        <img class="brand-logo" alt=""
+             src="{{ url_for('static', filename='img/boa.svg') }}">
+        <span class="brand-name">BoA (Bunch of AIgents)</span>
+      </a>
+    </div>
+
+    <div class="agent-list-header">
+      <span class="agent-list-title" data-i18n="sidebar.agents">Agents</span>
+      <button type="button" class="button button-primary button-add" id="vAddAgentButton"
+              title="Add an agent" data-i18n-title="sidebar.addAgent">+</button>
+    </div>
+
+    <ul class="agent-list" id="vAgentList">
+      <li class="empty" data-i18n="sidebar.loading">Loading…</li>
+    </ul>
+
+    <ul class="nav">
+      <li><a href="/" {% if vActiveSection == 'agents' %}aria-current="page"{% endif %}
+             data-i18n="nav.agents">Agents</a></li>
+      <li><a href="/kanban/" {% if vActiveSection == 'kanban' %}aria-current="page"{% endif %}
+             data-i18n="nav.kanban">Kanban</a></li>
+      <li><a href="/tools/" {% if vActiveSection == 'tools' %}aria-current="page"{% endif %}
+             data-i18n="nav.tools">Tools</a></li>
+      <li><a href="/settings/" {% if vActiveSection == 'settings' %}aria-current="page"{% endif %}
+             data-i18n="nav.settings">Settings</a></li>
+      <li><a href="/api/doc/" {% if vActiveSection == 'api-doc' %}aria-current="page"{% endif %}
+             data-i18n="nav.apiDoc">API documentation</a></li>
+      <li><a href="/logout" data-i18n="nav.logOut">Log out</a></li>
+    </ul>
+
+  </aside>
+
+  <main class="main">
+    {% block vMain %}{% endblock %}
+  </main>
+
+  <!-- Pop-up messages, over the content column and centred in it.
+       They used to sit at the top of that column, which is off screen
+       whenever the Save button that produced them is at the bottom of a long
+       tab: the message was written and nobody ever saw it. -->
+  <div class="notice-layer" id="vNotice" aria-live="polite"></div>
+
+  <!-- One strip across the whole window, under the sidebar as well: whatever
+       is true of the installation as a whole belongs here, not inside a
+       page. -->
+  <footer class="status-bar" id="vStatusBar">
+    <!-- The readings live in their own box, and not straight in the bar,
+         because the dividers are drawn one step to the left of each item:
+         this box has no padding, so the divider of the first item on a
+         wrapped line falls outside it and is clipped away instead of
+         opening the line with a stray bar. -->
+    <div class="status-strip">
+      <span class="status-item" id="vStatusExecutor">
+        <span class="status-dot" data-up="false"></span>
+        <span data-i18n="status.executor">executor</span>
+      </span>
+      <span class="status-item" id="vStatusAgentApi">
+        <span class="status-dot" data-up="false"></span>
+        <span data-i18n="status.agentApi">agent API</span>
+      </span>
+      <span class="status-item" id="vStatusAgents">
+        <span data-i18n="status.agents">agents</span>
+        <span class="status-value">—</span>
+      </span>
+      <span class="status-item" id="vStatusBoard">
+        <span data-i18n="status.board">board</span>
+        <span class="status-value">—</span>
+      </span>
+      <span class="status-item" id="vStatusTokens">
+        <span data-i18n="status.tokens">tokens today</span>
+        <span class="status-value">—</span>
+      </span>
+
+      <span class="status-spacer"></span>
+
+      <!-- The one thing on the right of the bar is where this installation came
+           from. The account is not shown: there is only ever one, so naming it
+           says nothing, and the clock is already in the system tray. -->
+      <a class="status-item status-repo" id="vStatusRepo"
+         href="https://github.com/nipegun/bunch-of-aigents"
+         target="_blank" rel="noopener noreferrer"
+         title="Project repository on GitHub" data-i18n-title="status.repository">
+        <svg class="status-repo-logo" viewBox="0 0 16 16" width="14" height="14"
+             aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+        <span class="status-repo-name">nipegun</span>
+      </a>
+    </div>
+  </footer>
+</div>
+{% endblock %}

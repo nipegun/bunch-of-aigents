@@ -1,0 +1,34 @@
+#!/sbin/openrc-run
+
+# Bunch of AIgents - the web application.
+#
+# gunicorn binds a Unix socket and nothing on the network, so the only way in
+# is through the application's own HAProxy. That socket lives in /run/boa-web,
+# which start_pre creates owned by `boa` - the systemd unit did it with
+# RuntimeDirectory=boa-web and RuntimeDirectoryMode=0750.
+
+name="boa-web"
+description="Bunch of AIgents - Web application"
+
+command="/opt/boa/venv/bin/gunicorn"
+command_args="--config /opt/boa/webapp/backend/web/gunicorn.conf.py backend.web.server:vApp"
+command_user="boa:boa"
+directory="/opt/boa/webapp"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+export PYTHONPATH=/opt/boa/webapp
+export BOA_BASE_DIR=/opt/boa
+
+depend() {
+  need net boa-exec
+}
+
+start_pre() {
+  checkpath --directory --mode 0750 --owner boa:boa /run/boa-web
+  # Gunicorn writes a control directory under the service user's home.
+  checkpath --directory --mode 0700 --owner boa:boa /opt/boa/.gunicorn
+}

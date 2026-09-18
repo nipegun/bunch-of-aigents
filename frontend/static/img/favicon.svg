@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img"
+     aria-label="Bunch of AIgents">
+  <title>Bunch of AIgents</title>
+  <!--
+    The same shield as boa.svg with ONE robot instead of three.
+
+    A favicon is read at 16 pixels. Three robots there is a smudge: the eye
+    sees a blue shape with something inside it and cannot tell what. One robot
+    at twice the size survives the shrink, which is the whole job of a mark on
+    a tab. The full logo, with the bunch in it, is the one in the sidebar,
+    where there is room for it.
+  -->
+  <mask id="vBoaFaviconMask">
+    <path d="M32 3 L58 12 V30 C58 45.5 47 55.5 32 61 C17 55.5 6 45.5 6 30 V12 Z"
+          fill="#ffffff"/>
+    <rect x="17" y="26" width="30" height="24" rx="6" fill="#000000"/>
+    <rect x="30.3" y="16" width="3.4" height="10" rx="1.7" fill="#000000"/>
+    <circle cx="32" cy="14.5" r="3.6" fill="#000000"/>
+    <g fill="#ffffff">
+      <circle cx="25.5" cy="37" r="3.8"/>
+      <circle cx="38.5" cy="37" r="3.8"/>
+    </g>
+  </mask>
+
+  <rect width="64" height="64" fill="#3b6ef0" mask="url(#vBoaFaviconMask)"/>
+</svg>

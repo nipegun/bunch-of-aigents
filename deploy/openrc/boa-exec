@@ -1,0 +1,36 @@
+#!/sbin/openrc-run
+
+# Bunch of AIgents - privileged executor daemon.
+#
+# This one really is root: it creates the Linux user of each agent, writes
+# their crontabs and starts their runs. Its surface is a closed vocabulary of
+# verbs over a Unix socket, not a remote shell.
+#
+# supervise-daemon is what gives this the `Restart=on-failure` of the systemd
+# unit it mirrors: OpenRC's plain start-stop-daemon starts a process and
+# forgets about it.
+
+name="boa-exec"
+description="Bunch of AIgents - Privileged executor daemon"
+
+command="/opt/boa/venv/bin/python3"
+command_args="-m backend.core.exec_daemon"
+directory="/opt/boa/webapp"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+export PYTHONPATH=/opt/boa/webapp
+export BOA_BASE_DIR=/opt/boa
+
+depend() {
+  need net
+}
+
+start_pre() {
+  # systemd's RuntimeDirectory=boa, by hand. root owns it, which is what keeps
+  # the socket out of reach of every agent.
+  checkpath --directory --mode 0755 --owner root:root /run/boa
+}
