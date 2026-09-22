@@ -1,0 +1,46 @@
+{
+  "provider": "google",
+  "documentation": "https://ai.google.dev/gemini-api/docs/models",
+  "models": [
+    {
+      "id": "gemini-3.7-flash",
+      "context": "1M",
+      "note": "$0.75 in / $3.75 out per Mtok"
+    },
+    {
+      "id": "gemini-3.6-flash",
+      "context": "1M",
+      "note": "$0.75 in / $3.75 out per Mtok"
+    },
+    {
+      "id": "gemini-3.5-flash",
+      "context": "1M",
+      "note": "$1.5 in / $9 out per Mtok"
+    },
+    {
+      "id": "gemini-3.5-flash-lite",
+      "context": "1M",
+      "note": "$0.3 in / $2.5 out per Mtok"
+    },
+    {
+      "id": "gemini-3.1-flash-lite",
+      "context": "1M",
+      "note": "$0.25 in / $1.5 out per Mtok"
+    },
+    {
+      "id": "gemini-3.1-pro-preview",
+      "context": "1M",
+      "note": "$2 in / $12 out per Mtok"
+    },
+    {
+      "id": "gemini-3-flash-preview",
+      "context": "1M",
+      "note": "$0.5 in / $3 out per Mtok"
+    },
+    {
+      "id": "gemini-2.5-flash",
+      "context": "1M",
+      "note": "$0.3 in / $2.5 out per Mtok"
+    }
+  ]
+}

@@ -1,0 +1,930 @@
+{
+  "provider": "openrouter",
+  "documentation": "https://openrouter.ai/models",
+  "models": [
+    {
+      "id": "amazon/nova-2-lite-v1",
+      "label": "nova-2-lite-v1",
+      "context": "1M",
+      "note": "$0.3 in / $2.5 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-fable-5",
+      "label": "claude-fable-5",
+      "context": "1M",
+      "note": "$10 in / $50 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-haiku-4.5",
+      "label": "claude-haiku-4.5",
+      "context": "200K",
+      "note": "$1 in / $5 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-4",
+      "label": "claude-opus-4",
+      "context": "200K",
+      "note": "$15 in / $75 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-4.1",
+      "label": "claude-opus-4.1",
+      "context": "200K",
+      "note": "$15 in / $75 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-4.5",
+      "label": "claude-opus-4.5",
+      "context": "200K",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-4.6",
+      "label": "claude-opus-4.6",
+      "context": "1M",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-4.7",
+      "label": "claude-opus-4.7",
+      "context": "1M",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-4.8",
+      "label": "claude-opus-4.8",
+      "context": "1M",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-4.8-fast",
+      "label": "claude-opus-4.8-fast",
+      "context": "1M",
+      "note": "$10 in / $50 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-5",
+      "label": "claude-opus-5",
+      "context": "1M",
+      "note": "$5 in / $25 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-opus-5-fast",
+      "label": "claude-opus-5-fast",
+      "context": "1M",
+      "note": "$10 in / $50 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-sonnet-4",
+      "label": "claude-sonnet-4",
+      "context": "1M",
+      "note": "$3 in / $15 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-sonnet-4.5",
+      "label": "claude-sonnet-4.5",
+      "context": "1M",
+      "note": "$3 in / $15 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-sonnet-4.6",
+      "label": "claude-sonnet-4.6",
+      "context": "1M",
+      "note": "$3 in / $15 out per Mtok"
+    },
+    {
+      "id": "anthropic/claude-sonnet-5",
+      "label": "claude-sonnet-5",
+      "context": "1M",
+      "note": "$2 in / $10 out per Mtok"
+    },
+    {
+      "id": "bytedance-seed/seed-1.6",
+      "label": "seed-1.6",
+      "context": "256K",
+      "note": "$0.25 in / $2 out per Mtok"
+    },
+    {
+      "id": "bytedance-seed/seed-1.6-flash",
+      "label": "seed-1.6-flash",
+      "context": "256K",
+      "note": "$0.075 in / $0.3 out per Mtok"
+    },
+    {
+      "id": "bytedance-seed/seed-2-1-turbo",
+      "label": "seed-2-1-turbo",
+      "context": "256K",
+      "note": "$0.5 in / $2.5 out per Mtok"
+    },
+    {
+      "id": "bytedance-seed/seed-2.0-code",
+      "label": "seed-2.0-code",
+      "context": "256K",
+      "note": "$0.5 in / $3 out per Mtok"
+    },
+    {
+      "id": "bytedance-seed/seed-2.0-lite",
+      "label": "seed-2.0-lite",
+      "context": "256K",
+      "note": "$0.25 in / $2 out per Mtok"
+    },
+    {
+      "id": "bytedance-seed/seed-2.0-mini",
+      "label": "seed-2.0-mini",
+      "context": "256K",
+      "note": "$0.1 in / $0.4 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-chat-v3.1",
+      "label": "deepseek-chat-v3.1",
+      "context": "160K",
+      "note": "$0.55 in / $1.65 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-v3.1-terminus",
+      "label": "deepseek-v3.1-terminus",
+      "context": "160K",
+      "note": "$0.27 in / $1 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-v3.2",
+      "label": "deepseek-v3.2",
+      "context": "160K",
+      "note": "$0.269 in / $0.4 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-v3.2-exp",
+      "label": "deepseek-v3.2-exp",
+      "context": "160K",
+      "note": "$0.27 in / $0.41 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-v4-flash",
+      "label": "deepseek-v4-flash",
+      "context": "1M",
+      "note": "$0.088606 in / $0.177212 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-v4-flash-0731",
+      "label": "deepseek-v4-flash-0731",
+      "context": "1280K",
+      "note": "$0.065 in / $0.18 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-v4-flash-vision-exp",
+      "label": "deepseek-v4-flash-vision-exp",
+      "context": "1M",
+      "note": "$0.44 in / $1.32 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-v4-pro",
+      "label": "deepseek-v4-pro",
+      "context": "1M",
+      "note": "$1.6 in / $3.2 out per Mtok"
+    },
+    {
+      "id": "deepseek/deepseek-v4-pro-0813",
+      "label": "deepseek-v4-pro-0813",
+      "context": "1M",
+      "note": "$1.32 in / $3.96 out per Mtok"
+    },
+    {
+      "id": "google/gemini-2.5-flash",
+      "label": "gemini-2.5-flash",
+      "context": "1M",
+      "note": "$0.3 in / $2.5 out per Mtok"
+    },
+    {
+      "id": "google/gemini-2.5-flash-lite",
+      "label": "gemini-2.5-flash-lite",
+      "context": "1M",
+      "note": "$0.1 in / $0.4 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3-flash-preview",
+      "label": "gemini-3-flash-preview",
+      "context": "1M",
+      "note": "$0.5 in / $3 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3.1-flash-lite",
+      "label": "gemini-3.1-flash-lite",
+      "context": "1M",
+      "note": "$0.25 in / $1.5 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3.1-flash-lite-preview",
+      "label": "gemini-3.1-flash-lite-preview",
+      "context": "1M",
+      "note": "$0.25 in / $1.5 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3.1-pro-preview",
+      "label": "gemini-3.1-pro-preview",
+      "context": "1M",
+      "note": "$2 in / $12 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3.1-pro-preview-customtools",
+      "label": "gemini-3.1-pro-preview-customtools",
+      "context": "1M",
+      "note": "$2 in / $12 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3.5-flash",
+      "label": "gemini-3.5-flash",
+      "context": "1M",
+      "note": "$1.5 in / $9 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3.5-flash-lite",
+      "label": "gemini-3.5-flash-lite",
+      "context": "1M",
+      "note": "$0.3 in / $2.5 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3.6-flash",
+      "label": "gemini-3.6-flash",
+      "context": "1M",
+      "note": "$0.75 in / $3.75 out per Mtok"
+    },
+    {
+      "id": "google/gemini-3.7-flash",
+      "label": "gemini-3.7-flash",
+      "context": "1M",
+      "note": "$0.75 in / $3.75 out per Mtok"
+    },
+    {
+      "id": "google/gemma-4-26b-a4b-it",
+      "label": "gemma-4-26b-a4b-it",
+      "context": "256K",
+      "note": "$0.07 in / $0.34 out per Mtok"
+    },
+    {
+      "id": "google/gemma-4-31b-it",
+      "label": "gemma-4-31b-it",
+      "context": "256K",
+      "note": "$0.09 in / $0.34 out per Mtok"
+    },
+    {
+      "id": "inception/mercury-2",
+      "label": "mercury-2",
+      "context": "125K",
+      "note": "$0.25 in / $0.75 out per Mtok"
+    },
+    {
+      "id": "inclusionai/ling-3.0-flash",
+      "label": "ling-3.0-flash",
+      "context": "256K",
+      "note": "$0.021 in / $0.063 out per Mtok"
+    },
+    {
+      "id": "meituan/longcat-2.0",
+      "label": "longcat-2.0",
+      "context": "1.05M",
+      "note": "$0.3 in / $1.2 out per Mtok"
+    },
+    {
+      "id": "meta/muse-glimmer-30b",
+      "label": "muse-glimmer-30b",
+      "context": "128K",
+      "note": "$0.3 in / $1.2 out per Mtok"
+    },
+    {
+      "id": "meta/muse-spark-1.1",
+      "label": "muse-spark-1.1",
+      "context": "1M",
+      "note": "$1.25 in / $4.25 out per Mtok"
+    },
+    {
+      "id": "meta/muse-spark-1.2",
+      "label": "muse-spark-1.2",
+      "context": "1M",
+      "note": "$1.25 in / $4.25 out per Mtok"
+    },
+    {
+      "id": "meta/muse-spark-1.2-contributor",
+      "label": "muse-spark-1.2-contributor",
+      "context": "1M",
+      "note": "$0.1 in / $0.2 out per Mtok"
+    },
+    {
+      "id": "minimax/minimax-m1",
+      "label": "minimax-m1",
+      "context": "1M",
+      "note": "$0.55 in / $2.2 out per Mtok"
+    },
+    {
+      "id": "minimax/minimax-m3",
+      "label": "minimax-m3",
+      "context": "1M",
+      "note": "$0.3 in / $1.2 out per Mtok"
+    },
+    {
+      "id": "mistralai/mistral-medium-3-5",
+      "label": "mistral-medium-3-5",
+      "context": "256K",
+      "note": "$1.5 in / $7.5 out per Mtok"
+    },
+    {
+      "id": "mistralai/mistral-small-2603",
+      "label": "mistral-small-2603",
+      "context": "256K",
+      "note": "$0.15 in / $0.6 out per Mtok"
+    },
+    {
+      "id": "moonshotai/kimi-k2.5",
+      "label": "kimi-k2.5",
+      "context": "256K",
+      "note": "$0.45 in / $2.25 out per Mtok"
+    },
+    {
+      "id": "moonshotai/kimi-k2.6",
+      "label": "kimi-k2.6",
+      "context": "256K",
+      "note": "$0.95 in / $4 out per Mtok"
+    },
+    {
+      "id": "moonshotai/kimi-k3",
+      "label": "kimi-k3",
+      "context": "1M",
+      "note": "$3 in / $15 out per Mtok"
+    },
+    {
+      "id": "nex-agi/nex-n2-pro",
+      "label": "nex-n2-pro",
+      "context": "256K",
+      "note": "$0.25 in / $1 out per Mtok"
+    },
+    {
+      "id": "nvidia/nemotron-3-nano-30b-a3b",
+      "label": "nemotron-3-nano-30b-a3b",
+      "context": "256K",
+      "note": "$0.05 in / $0.2 out per Mtok"
+    },
+    {
+      "id": "nvidia/nemotron-3-super-120b-a12b",
+      "label": "nemotron-3-super-120b-a12b",
+      "context": "1M",
+      "note": "$0.085 in / $0.4 out per Mtok"
+    },
+    {
+      "id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "label": "nemotron-3-ultra-550b-a55b",
+      "context": "256K",
+      "note": "$0.5 in / $2.2 out per Mtok"
+    },
+    {
+      "id": "nvidia/nemotron-3.5-lightning",
+      "label": "nemotron-3.5-lightning",
+      "context": "256K",
+      "note": "$0.08 in / $0.2 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5",
+      "label": "gpt-5",
+      "context": "400K",
+      "note": "$1.25 in / $10 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5-mini",
+      "label": "gpt-5-mini",
+      "context": "400K",
+      "note": "$0.25 in / $2 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5-nano",
+      "label": "gpt-5-nano",
+      "context": "400K",
+      "note": "$0.05 in / $0.4 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.1",
+      "label": "gpt-5.1",
+      "context": "400K",
+      "note": "$1.25 in / $10 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.1-codex",
+      "label": "gpt-5.1-codex",
+      "context": "400K",
+      "note": "$1.25 in / $10 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.1-codex-max",
+      "label": "gpt-5.1-codex-max",
+      "context": "400K",
+      "note": "$1.25 in / $10 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.1-codex-mini",
+      "label": "gpt-5.1-codex-mini",
+      "context": "400K",
+      "note": "$0.25 in / $2 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.2",
+      "label": "gpt-5.2",
+      "context": "400K",
+      "note": "$1.75 in / $14 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.2-codex",
+      "label": "gpt-5.2-codex",
+      "context": "400K",
+      "note": "$1.75 in / $14 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.2-pro",
+      "label": "gpt-5.2-pro",
+      "context": "400K",
+      "note": "$21 in / $168 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.3-codex",
+      "label": "gpt-5.3-codex",
+      "context": "400K",
+      "note": "$1.75 in / $14 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.4",
+      "label": "gpt-5.4",
+      "context": "1.05M",
+      "note": "$2.5 in / $15 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.4-mini",
+      "label": "gpt-5.4-mini",
+      "context": "400K",
+      "note": "$0.75 in / $4.5 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.4-nano",
+      "label": "gpt-5.4-nano",
+      "context": "400K",
+      "note": "$0.2 in / $1.25 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.4-pro",
+      "label": "gpt-5.4-pro",
+      "context": "1.05M",
+      "note": "$30 in / $180 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.5",
+      "label": "gpt-5.5",
+      "context": "1.05M",
+      "note": "$5 in / $30 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.5-pro",
+      "label": "gpt-5.5-pro",
+      "context": "1.05M",
+      "note": "$30 in / $180 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.6-luna",
+      "label": "gpt-5.6-luna",
+      "context": "1.05M",
+      "note": "$0.2 in / $1.2 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.6-luna-pro",
+      "label": "gpt-5.6-luna-pro",
+      "context": "1.05M",
+      "note": "$0.2 in / $1.2 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.6-sol",
+      "label": "gpt-5.6-sol",
+      "context": "1.05M",
+      "note": "$2 in / $10 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.6-sol-pro",
+      "label": "gpt-5.6-sol-pro",
+      "context": "1.05M",
+      "note": "$2 in / $10 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.6-terra",
+      "label": "gpt-5.6-terra",
+      "context": "1.05M",
+      "note": "$2 in / $12 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-5.6-terra-pro",
+      "label": "gpt-5.6-terra-pro",
+      "context": "1.05M",
+      "note": "$2 in / $12 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "label": "gpt-oss-120b",
+      "context": "128K",
+      "note": "$0.037 in / $0.17 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-oss-20b",
+      "label": "gpt-oss-20b",
+      "context": "128K",
+      "note": "$0.03 in / $0.13 out per Mtok"
+    },
+    {
+      "id": "openai/o1",
+      "label": "o1",
+      "context": "200K",
+      "note": "$15 in / $60 out per Mtok"
+    },
+    {
+      "id": "openai/o3",
+      "label": "o3",
+      "context": "200K",
+      "note": "$2 in / $8 out per Mtok"
+    },
+    {
+      "id": "openai/o3-mini",
+      "label": "o3-mini",
+      "context": "200K",
+      "note": "$1.1 in / $4.4 out per Mtok"
+    },
+    {
+      "id": "openai/o3-pro",
+      "label": "o3-pro",
+      "context": "200K",
+      "note": "$20 in / $80 out per Mtok"
+    },
+    {
+      "id": "openai/o4-mini",
+      "label": "o4-mini",
+      "context": "200K",
+      "note": "$1.1 in / $4.4 out per Mtok"
+    },
+    {
+      "id": "poolside/laguna-s-2.1",
+      "label": "laguna-s-2.1",
+      "context": "1M",
+      "note": "$0.09 in / $0.18 out per Mtok"
+    },
+    {
+      "id": "poolside/laguna-xs-2.1",
+      "label": "laguna-xs-2.1",
+      "context": "256K",
+      "note": "$0.06 in / $0.12 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen-plus-2025-07-28",
+      "label": "qwen-plus-2025-07-28",
+      "context": "1M",
+      "note": "$0.26 in / $0.78 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3-14b",
+      "label": "qwen3-14b",
+      "context": "128K",
+      "note": "$0.12 in / $0.24 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3-235b-a22b",
+      "label": "qwen3-235b-a22b",
+      "context": "128K",
+      "note": "$0.455 in / $1.82 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3-30b-a3b",
+      "label": "qwen3-30b-a3b",
+      "context": "128K",
+      "note": "$0.12 in / $0.5 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3-32b",
+      "label": "qwen3-32b",
+      "context": "128K",
+      "note": "$0.08 in / $0.28 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3-8b",
+      "label": "qwen3-8b",
+      "context": "128K",
+      "note": "$0.117 in / $0.455 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3-coder-plus",
+      "label": "qwen3-coder-plus",
+      "context": "1M",
+      "note": "$0.65 in / $3.25 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3-max",
+      "label": "qwen3-max",
+      "context": "256K",
+      "note": "$0.78 in / $3.9 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3-max-thinking",
+      "label": "qwen3-max-thinking",
+      "context": "256K",
+      "note": "$0.78 in / $3.9 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.5-122b-a10b",
+      "label": "qwen3.5-122b-a10b",
+      "context": "256K",
+      "note": "$0.29 in / $2.4 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.5-27b",
+      "label": "qwen3.5-27b",
+      "context": "256K",
+      "note": "$0.195 in / $1.56 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.5-35b-a3b",
+      "label": "qwen3.5-35b-a3b",
+      "context": "256K",
+      "note": "$0.25 in / $1.25 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.5-397b-a17b",
+      "label": "qwen3.5-397b-a17b",
+      "context": "256K",
+      "note": "$0.39 in / $2.34 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.5-9b",
+      "label": "qwen3.5-9b",
+      "context": "256K",
+      "note": "$0.1 in / $0.15 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.5-flash-02-23",
+      "label": "qwen3.5-flash-02-23",
+      "context": "1M",
+      "note": "$0.065 in / $0.26 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.5-plus-02-15",
+      "label": "qwen3.5-plus-02-15",
+      "context": "1M",
+      "note": "$0.26 in / $1.56 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.5-plus-20260420",
+      "label": "qwen3.5-plus-20260420",
+      "context": "1M",
+      "note": "$0.3 in / $1.8 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.6-27b",
+      "label": "qwen3.6-27b",
+      "context": "256K",
+      "note": "$0.6 in / $3.6 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.6-35b-a3b",
+      "label": "qwen3.6-35b-a3b",
+      "context": "256K",
+      "note": "$0.1 in / $0.9 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.6-flash",
+      "label": "qwen3.6-flash",
+      "context": "1M",
+      "note": "$0.1875 in / $1.125 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.6-max-preview",
+      "label": "qwen3.6-max-preview",
+      "context": "256K",
+      "note": "$1.027 in / $6.162 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.6-plus",
+      "label": "qwen3.6-plus",
+      "context": "1M",
+      "note": "$0.325 in / $1.95 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.7-flash",
+      "label": "qwen3.7-flash",
+      "context": "1M",
+      "note": "$0.03 in / $0.13 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.7-max",
+      "label": "qwen3.7-max",
+      "context": "1M",
+      "note": "$1.475 in / $4.425 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.7-plus",
+      "label": "qwen3.7-plus",
+      "context": "1M",
+      "note": "$0.32 in / $1.28 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.8-2.4t-a95b",
+      "label": "qwen3.8-2.4t-a95b",
+      "context": "1M",
+      "note": "$2 in / $6 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.8-27b",
+      "label": "qwen3.8-27b",
+      "context": "1M",
+      "note": "$0.425 in / $2.55 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.8-flash",
+      "label": "qwen3.8-flash",
+      "context": "1M",
+      "note": "$0.15 in / $0.47 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.8-max",
+      "label": "qwen3.8-max",
+      "context": "1M",
+      "note": "$2 in / $6 out per Mtok"
+    },
+    {
+      "id": "sakana/fugu-ultra",
+      "label": "fugu-ultra",
+      "context": "1M",
+      "note": "$5 in / $30 out per Mtok"
+    },
+    {
+      "id": "sakana/sakana-namazu",
+      "label": "sakana-namazu",
+      "context": "256K",
+      "note": "$0.95 in / $4 out per Mtok"
+    },
+    {
+      "id": "stepfun/step-3.7-flash",
+      "label": "step-3.7-flash",
+      "context": "256K",
+      "note": "$0.2 in / $1.15 out per Mtok"
+    },
+    {
+      "id": "tencent/hy3",
+      "label": "hy3",
+      "context": "256K",
+      "note": "$0.132 in / $0.528 out per Mtok"
+    },
+    {
+      "id": "tencent/hy3-preview",
+      "label": "hy3-preview",
+      "context": "256K",
+      "note": "$0.18 in / $0.6 out per Mtok"
+    },
+    {
+      "id": "tencent/hy4-preview",
+      "label": "hy4-preview",
+      "context": "1M",
+      "note": "$0.834 in / $2.501 out per Mtok"
+    },
+    {
+      "id": "thinkingmachines/inkling",
+      "label": "inkling",
+      "context": "1M",
+      "note": "$1 in / $4.05 out per Mtok"
+    },
+    {
+      "id": "thinkingmachines/inkling-small",
+      "label": "inkling-small",
+      "context": "1M",
+      "note": "$0.45 in / $1.2 out per Mtok"
+    },
+    {
+      "id": "upstage/solar-pro-3",
+      "label": "solar-pro-3",
+      "context": "128K",
+      "note": "$0.15 in / $0.6 out per Mtok"
+    },
+    {
+      "id": "upstage/solar-pro4",
+      "label": "solar-pro4",
+      "context": "512K",
+      "note": "$0.03 in / $0.12 out per Mtok"
+    },
+    {
+      "id": "x-ai/grok-4.20",
+      "label": "grok-4.20",
+      "context": "2M",
+      "note": "$1.25 in / $2.5 out per Mtok"
+    },
+    {
+      "id": "x-ai/grok-4.3",
+      "label": "grok-4.3",
+      "context": "1M",
+      "note": "$1.25 in / $2.5 out per Mtok"
+    },
+    {
+      "id": "x-ai/grok-4.5",
+      "label": "grok-4.5",
+      "context": "500K",
+      "note": "$2 in / $6 out per Mtok"
+    },
+    {
+      "id": "x-ai/grok-4.6",
+      "label": "grok-4.6",
+      "context": "500K",
+      "note": "$2 in / $6 out per Mtok"
+    },
+    {
+      "id": "xiaomi/mimo-v2.5",
+      "label": "mimo-v2.5",
+      "context": "1.05M",
+      "note": "$0.14 in / $0.28 out per Mtok"
+    },
+    {
+      "id": "xiaomi/mimo-v2.5-pro",
+      "label": "mimo-v2.5-pro",
+      "context": "1.05M",
+      "note": "$0.435 in / $0.87 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-4.5",
+      "label": "glm-4.5",
+      "context": "128K",
+      "note": "$0.6 in / $2.2 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-4.5-air",
+      "label": "glm-4.5-air",
+      "context": "128K",
+      "note": "$0.13 in / $0.85 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-4.5v",
+      "label": "glm-4.5v",
+      "context": "64K",
+      "note": "$0.6 in / $1.8 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-4.6",
+      "label": "glm-4.6",
+      "context": "200K",
+      "note": "$0.43 in / $1.75 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-4.6v",
+      "label": "glm-4.6v",
+      "context": "128K",
+      "note": "$0.3 in / $0.9 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-4.7",
+      "label": "glm-4.7",
+      "context": "200K",
+      "note": "$0.4 in / $1.75 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-4.7-flash",
+      "label": "glm-4.7-flash",
+      "context": "198K",
+      "note": "$0.06 in / $0.4 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-5",
+      "label": "glm-5",
+      "context": "200K",
+      "note": "$0.6 in / $1.92 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-5-turbo",
+      "label": "glm-5-turbo",
+      "context": "198K",
+      "note": "$1.2 in / $4 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-5.1",
+      "label": "glm-5.1",
+      "context": "200K",
+      "note": "$0.966 in / $3.036 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-5.2",
+      "label": "glm-5.2",
+      "context": "1M",
+      "note": "$1.19 in / $3.74 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-5.3",
+      "label": "glm-5.3",
+      "context": "1280K",
+      "note": "$1.4 in / $4.4 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-5.3-flash",
+      "label": "glm-5.3-flash",
+      "context": "1280K",
+      "note": "$0.075 in / $0.25 out per Mtok"
+    },
+    {
+      "id": "z-ai/glm-5v-turbo",
+      "label": "glm-5v-turbo",
+      "context": "198K",
+      "note": "$1.2 in / $4 out per Mtok"
+    }
+  ]
+}

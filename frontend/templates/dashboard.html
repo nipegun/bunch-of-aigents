@@ -1,0 +1,343 @@
+{% extends "app_base.html" %}
+{% block vTitleKey %}title.agents{% endblock %}
+{% block vTitle %}Agents - Bunch of AIgents{% endblock %}
+
+{% block vMain %}
+<div class="page-header">
+  <h1 class="page-title" id="vAgentTitle" data-i18n="agents.pickOne">Pick an agent</h1>
+  <div class="form-actions" id="vAgentHeaderActions" hidden>
+    <button type="button" class="button" id="vClearChatButton" data-i18n="chat.clear">Clear chat</button>
+    <button type="button" class="button" id="vRunNowButton" data-i18n="agents.runNow">Run now</button>
+    <button type="button" class="button button-danger" id="vDeleteAgentButton" data-i18n="agents.delete">Delete</button>
+  </div>
+</div>
+
+<section id="vChatPanel" hidden>
+  <div class="chat">
+    <div class="chat-log" id="vChatLog" aria-live="polite"></div>
+
+    <div class="notice notice-error" id="vChatDisabledNotice" hidden
+         data-i18n="chat.agentDisabled">
+      This agent is switched off, so it cannot answer. Turn it on in its
+      settings, behind the wrench in the sidebar.
+    </div>
+
+    <form class="chat-composer" id="vChatForm">
+      <label class="sr-only" for="vChatInput" data-i18n="chat.inputLabel">Message</label>
+      <textarea id="vChatInput" rows="2" spellcheck="true"
+                data-i18n-placeholder="chat.placeholder"
+                placeholder="Ask this agent to do something…"></textarea>
+      <div class="chat-send-lane">
+        <button type="submit" class="button button-primary" id="vChatSendButton"
+                data-i18n="chat.send">Send</button>
+      </div>
+    </form>
+    <p class="field-hint" id="vChatHint"></p>
+  </div>
+</section>
+
+<div id="vAgentEmptyState" class="panel">
+  <h2 class="panel-title" data-i18n="agents.emptyTitle">No agent selected</h2>
+  <p class="panel-hint" data-i18n="agents.emptyHint">
+    Pick an agent from the sidebar, or press + to create one. Creating an agent
+    creates a Linux user for it, with its own home directory that no other
+    agent can read.
+  </p>
+</div>
+
+<form id="vAgentForm" hidden>
+  <nav class="tabs" id="vAgentTabs" role="tablist">
+    <button type="button" class="tab" role="tab" data-agent-tab="general"
+            data-i18n="agents.tabGeneral">General</button>
+    <button type="button" class="tab" role="tab" data-agent-tab="model"
+            data-i18n="agents.tabModel">LLMs</button>
+    <button type="button" class="tab" role="tab" data-agent-tab="tools"
+            data-i18n="agents.tabTools">Tools</button>
+    <button type="button" class="tab" role="tab" data-agent-tab="skills"
+            data-i18n="agents.tabSkills">Skills</button>
+    <button type="button" class="tab" role="tab" data-agent-tab="channels"
+            data-i18n="agents.tabChannels">Channels</button>
+    <button type="button" class="tab" role="tab" data-agent-tab="prompt"
+            data-i18n="agents.tabPrompt">Prompt</button>
+    <button type="button" class="tab" role="tab" data-agent-tab="memory"
+            data-i18n="agents.tabMemory">Memory</button>
+    <button type="button" class="tab" role="tab" data-agent-tab="schedule"
+            data-i18n="agents.tabSchedule">Cron</button>
+    <button type="button" class="tab" role="tab" data-agent-tab="history"
+            data-i18n="agents.tabHistory">History</button>
+  </nav>
+
+  <section class="tab-panel" data-agent-panel="general" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.identity">Identity</h2>
+    <p class="panel-hint" id="vAgentIdentityHint"></p>
+    <div class="field-row">
+      <div class="field">
+        <label for="vNameInput" data-i18n="agents.name">Name</label>
+        <input type="text" id="vNameInput" name="name" required>
+      </div>
+      <div class="field">
+        <label for="vDescriptionInput" data-i18n="agents.description">Description</label>
+        <input type="text" id="vDescriptionInput" name="description">
+      </div>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vEnabledInput">
+      <label for="vEnabledInput" data-i18n="agents.enabled">Enabled. A disabled agent ignores its schedule.</label>
+    </div>
+  </div>
+
+  </section>
+
+  <section class="tab-panel" data-agent-panel="model" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.model">Main model</h2>
+    <p class="panel-hint" data-i18n="agents.modelHint">
+      Self-hosted providers need no API key. Cloud providers read their key from
+      keys/&lt;provider&gt;.key inside the agent's own home directory.
+    </p>
+    <div class="field-row">
+      <div class="field">
+        <label for="vProviderInput" data-i18n="agents.provider">Provider</label>
+        <select id="vProviderInput"></select>
+        <!-- The list is short on purpose; this says why, so a missing provider
+             does not read as a bug. -->
+        <p class="field-hint" data-i18n="agents.providerHint">
+          The self-hosted ones, plus every provider with a key in Settings.
+        </p>
+      </div>
+      <div class="field">
+        <label for="vModelInput" data-i18n="agents.modelName">Model</label>
+        <input type="text" id="vModelInput" list="vModelOptions"
+               autocomplete="off" spellcheck="false">
+        <datalist id="vModelOptions"></datalist>
+        <p class="field-hint" id="vModelHint"></p>
+      </div>
+    </div>
+    <!-- Only for a provider running on a machine of yours: a cloud one is
+         reached at its own address, which this installation already knows. -->
+    <div class="field" id="vBaseUrlField" hidden>
+      <label for="vBaseUrlInput" data-i18n="agents.baseUrl">Base URL</label>
+      <input type="text" id="vBaseUrlInput">
+      <p class="field-hint" data-i18n="agents.baseUrlHint">
+        Where your own server listens.
+      </p>
+    </div>
+  </div>
+
+  <!-- The second model is not a second opinion: it is what the run falls back
+       to when the first provider will not answer at all. -->
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.fallback">Backup model</h2>
+    <p class="panel-hint" data-i18n="agents.fallbackHint">
+      Used only when the main provider fails: no key, no answer, a model that is
+      not there. Leave the provider on "none" to have a run stop instead.
+    </p>
+    <div class="field-row">
+      <div class="field">
+        <label for="vFallbackProviderInput" data-i18n="agents.provider">Provider</label>
+        <select id="vFallbackProviderInput"></select>
+      </div>
+      <div class="field">
+        <label for="vFallbackModelInput" data-i18n="agents.modelName">Model</label>
+        <input type="text" id="vFallbackModelInput" list="vFallbackModelOptions"
+               autocomplete="off" spellcheck="false">
+        <datalist id="vFallbackModelOptions"></datalist>
+        <p class="field-hint" id="vFallbackModelHint"></p>
+      </div>
+    </div>
+    <div class="field" id="vFallbackBaseUrlField" hidden>
+      <label for="vFallbackBaseUrlInput" data-i18n="agents.baseUrl">Base URL</label>
+      <input type="text" id="vFallbackBaseUrlInput">
+      <p class="field-hint" data-i18n="agents.baseUrlHint">
+        Where your own server listens.
+      </p>
+    </div>
+    <!-- The model box is free text, so the pair can be made identical again by
+         typing. Said out loud rather than refused: it is the user's agent. -->
+    <p class="field-warning" id="vFallbackSameWarning" hidden
+       data-i18n="agents.fallbackSame">
+      The backup is the same provider and the same model as the main one, so it
+      cannot answer anything the main one could not. Change one of the two, or
+      set the provider to "none".
+    </p>
+  </div>
+
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.limits">Spending ceilings</h2>
+    <p class="panel-hint" data-i18n="agents.limitsHint">
+      An agent on a schedule with no ceiling is an open invoice. Every run stops
+      at whichever of these it reaches first.
+    </p>
+    <div class="field-row">
+      <div class="field">
+        <label for="vMaxTokensInput" data-i18n="agents.maxTokens">Tokens per run</label>
+        <input type="number" id="vMaxTokensInput" min="1">
+      </div>
+      <div class="field">
+        <label for="vMaxStepsInput" data-i18n="agents.maxSteps">Steps per run</label>
+        <input type="number" id="vMaxStepsInput" min="1">
+      </div>
+      <div class="field">
+        <label for="vTimeoutInput" data-i18n="agents.timeout">Seconds per run</label>
+        <input type="number" id="vTimeoutInput" min="1">
+      </div>
+      <div class="field">
+        <label for="vMaxRunsInput" data-i18n="agents.maxRuns">Runs per day</label>
+        <input type="number" id="vMaxRunsInput" min="1">
+      </div>
+    </div>
+  </div>
+
+  </section>
+
+  <!-- One box per tool family, built by fRenderToolCheckboxes. The families
+       are whatever is installed on the server, so the boxes cannot be written
+       out here. -->
+  <section class="tab-panel" data-agent-panel="tools" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.tools">Tools</h2>
+    <p class="panel-hint" data-i18n="agents.toolsHint">
+      A tool this agent is not given is a tool it cannot call. The check runs on
+      the server, not in the prompt.
+    </p>
+  </div>
+
+  <div id="vToolPanels"></div>
+
+  <!-- Markup, not something the renderer builds: it is moved into the kanban
+       family's box, because that switch decides what those tools do. It lives
+       here so that its text is translated like any other, and so that there is
+       somewhere to put it back when no kanban tools are installed. -->
+  <div class="panel agent-kanban-switch" id="vKanbanSwitch">
+    <div class="checkbox-row">
+      <input type="checkbox" id="vKanbanEnabledInput">
+      <label for="vKanbanEnabledInput" data-i18n="agents.kanbanEnabled">
+        Let this agent use the kanban board. Unchecked, it gets no kanban tools
+        at all and stops adding cards.
+      </label>
+    </div>
+  </div>
+
+  </section>
+
+  <!-- The checkboxes are built by fRenderSkillCheckboxes: a skill is a
+       directory on the server, so what exists cannot be written out here. -->
+  <section class="tab-panel" data-agent-panel="skills" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.skills">Skills</h2>
+    <p class="panel-hint" data-i18n="agents.skillsHint">
+      Written procedures this agent may read. Only the name and the one-line
+      description of each go into its prompt; it reads the rest with skill.read
+      when it needs it.
+    </p>
+    <div id="vSkillCheckboxes"></div>
+    <p class="panel-hint" data-i18n="agents.skillsNeedTool">
+      A skill also needs the skill.read tool, under Tools.
+    </p>
+    <!-- Said here because there is no button for it anywhere: skills are
+         written on the server, like the tools, and for the same reason. -->
+    <p class="panel-hint" data-i18n="agents.skillsWhereTheyLive">
+      Skills live in /opt/boa/skills/, one directory each with a SKILL.md
+      inside. Add one there over SSH and it appears in this list.
+    </p>
+  </div>
+
+  </section>
+
+  <section class="tab-panel" data-agent-panel="channels" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.channels">Channels</h2>
+    <p class="panel-hint" data-i18n="agents.channelsHint">
+      Which channels this agent may write to. It never sees their credentials.
+    </p>
+    <div id="vChannelCheckboxes"></div>
+    <!-- Ticking a channel here does nothing on its own: the agent also needs
+         the channel.write tool, which lives in the Tools tab. -->
+    <p class="panel-hint" data-i18n="agents.channelsNeedTool">
+      A channel also needs the channel.write tool, under Tools.
+    </p>
+  </div>
+
+  </section>
+
+  <section class="tab-panel" data-agent-panel="prompt" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.systemPrompt">System prompt</h2>
+    <p class="panel-hint" data-i18n="agents.systemPromptHint">
+      Stored as system-prompt.md in the agent's home directory.
+    </p>
+    <div class="field">
+      <textarea id="vSystemPromptInput" spellcheck="false"></textarea>
+    </div>
+  </div>
+
+  </section>
+
+  <section class="tab-panel" data-agent-panel="memory" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.memory">Memory</h2>
+    <p class="panel-hint" data-i18n="agents.memoryHint">
+      What the agent wrote down for itself, in memory.md inside its home. It is
+      loaded at the start of every run, so keep it short: all of it is paid for
+      on every model call. You can correct it here.
+    </p>
+    <div class="field">
+      <textarea id="vMemoryInput" spellcheck="false"></textarea>
+      <p class="field-hint" id="vMemorySize"></p>
+    </div>
+  </div>
+
+  </section>
+
+  <section class="tab-panel" data-agent-panel="schedule" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.schedule">Cron</h2>
+    <p class="panel-hint" data-i18n="agents.scheduleHint">
+      This agent's own crontab, owned and run by its own user. One line per job.
+    </p>
+    <div class="field">
+      <textarea id="vCrontabInput" class="crontab-input" spellcheck="false"></textarea>
+      <p class="field-hint" id="vCrontabExample"></p>
+    </div>
+  </div>
+
+  </section>
+
+  <section class="tab-panel" data-agent-panel="history" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.history">History</h2>
+    <div class="table-wrap">
+      <table>
+        <tbody id="vUsageTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- What each run answered. A run started by cron has nowhere else to put
+       it: its output goes to cron's mail, which on a LAN box nobody reads. -->
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="agents.lastRuns">Last runs</h2>
+    <p class="panel-hint" data-i18n="agents.lastRunsHint">
+      What each run ended up saying, including the ones nobody asked for.
+    </p>
+    <div id="vRunHistory"></div>
+  </div>
+
+  </section>
+
+  <!-- Outside the tabs: Save has to be reachable from whichever one you are
+       looking at, and it saves all of them at once. -->
+  <div class="form-actions">
+    <button type="submit" class="button button-primary" data-i18n="common.save">Save</button>
+    <button type="button" class="button" id="vReloadAgentButton" data-i18n="common.discard">Discard changes</button>
+    <button type="button" class="button button-danger" id="vCancelNewAgentButton"
+            hidden data-i18n="agents.cancelNew">Cancel and delete this agent</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block vScripts %}
+<script src="{{ url_for('static', filename='js/markdown.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

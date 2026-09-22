@@ -1,0 +1,23 @@
+# Versions are pinned so that an --update never changes behaviour by surprise.
+# Every one of these was resolved and imported before being written here.
+
+# Web layer
+flask==3.1.3
+gunicorn==26.2.0
+
+# Password hashing for the single-user login
+argon2-cffi==25.1.0
+
+# HTTP client used by the web.fetch tool and by most of the twenty-five
+# provider adapters: everything that is not the Anthropic or the OpenAI SDK
+# talks to its provider through this.
+requests==2.34.2
+
+# Official SDKs for the two providers that ship one
+anthropic==1.5.0
+openai==3.13.0
+
+# Drives the browser the agents are given, when one is installed. The package
+# is small; the browser it downloads is not, which is why that is a separate
+# step the installer only takes when asked.
+playwright==1.58.0

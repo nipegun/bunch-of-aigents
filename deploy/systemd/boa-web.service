@@ -1,0 +1,36 @@
+[Unit]
+Description=Bunch of AIgents - Web application
+Documentation=https://github.com/nipegun/bunch-of-aigents
+After=network-online.target boa-exec.service
+Wants=network-online.target
+Requires=boa-exec.service
+
+[Service]
+Type=simple
+User=boa
+Group=boa
+WorkingDirectory=/opt/boa/webapp
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=BOA_BASE_DIR=/opt/boa
+# The socket gunicorn binds. systemd creates it owned by `boa`,
+# and the application's HAProxy is the only thing that opens it.
+RuntimeDirectory=boa-web
+RuntimeDirectoryMode=0750
+ExecStart=/opt/boa/venv/bin/gunicorn --config /opt/boa/webapp/backend/web/gunicorn.conf.py backend.web.server:vApp
+Restart=on-failure
+RestartSec=5
+
+# Isolation: the web application never needs root privileges
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+ReadWritePaths=/opt/boa/audio /opt/boa/db /opt/boa/kanban /opt/boa/config /opt/boa/logs /opt/boa/.gunicorn
+
+[Install]
+WantedBy=multi-user.target

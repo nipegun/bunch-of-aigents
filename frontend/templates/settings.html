@@ -1,0 +1,447 @@
+{% extends "app_base.html" %}
+{% block vTitleKey %}title.settings{% endblock %}
+{% block vTitle %}Settings - Bunch of AIgents{% endblock %}
+
+{% block vMain %}
+<div class="page-header">
+  <h1 class="page-title" data-i18n="settings.title">Settings</h1>
+</div>
+
+<!-- The tab in the URL, so a reload, a bookmark and the back button all keep
+     the section the user was in. -->
+<nav class="tabs" id="vSettingsTabs" role="tablist">
+  <button type="button" class="tab" role="tab" data-tab="system"
+          data-i18n="settings.tabSystem">Operating system</button>
+  <button type="button" class="tab" role="tab" data-tab="account"
+          data-i18n="settings.tabAccount">Account</button>
+  <button type="button" class="tab" role="tab" data-tab="email"
+          data-i18n="settings.tabEmail">Email</button>
+  <button type="button" class="tab" role="tab" data-tab="keys"
+          data-i18n="settings.tabKeys">API keys</button>
+  <button type="button" class="tab" role="tab" data-tab="channels"
+          data-i18n="settings.tabChannels">Channels</button>
+  <button type="button" class="tab" role="tab" data-tab="audio"
+          data-i18n="audio.tab">Audio</button>
+  <button type="button" class="tab" role="tab" data-tab="tools"
+          data-i18n="settings.tabTools">Tools</button>
+  <button type="button" class="tab" role="tab" data-tab="agents"
+          data-i18n="settings.tabAgents">Agents</button>
+  <button type="button" class="tab" role="tab" data-tab="chat"
+          data-i18n="settings.tabChat">Chat</button>
+  <button type="button" class="tab" role="tab" data-tab="kanban"
+          data-i18n="settings.tabKanban">Kanban</button>
+  <button type="button" class="tab" role="tab" data-tab="interface"
+          data-i18n="settings.tabInterface">Interface</button>
+</nav>
+
+<!-- Operating system ---------------------------------------------------- -->
+<section class="tab-panel" data-panel="system" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.systemTitle">This machine</h2>
+    <p class="panel-hint" data-i18n="settings.systemHint">
+      Read with no privileges, the same way the SysAdmin agent reads it.
+    </p>
+    <div class="table-wrap">
+      <table class="system-table"><tbody id="vSystemTable"></tbody></table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.servicesTitle">Services</h2>
+    <p class="panel-hint" data-i18n="settings.servicesHint">
+      If the executor or the agent API is down, agents do not run.
+    </p>
+    <div class="table-wrap">
+      <table class="system-table"><tbody id="vServicesTable"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<!-- Account ------------------------------------------------------------- -->
+{% include "settings_audio.html" %}
+
+<section class="tab-panel" data-panel="account" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.account">Account</h2>
+    <p class="panel-hint" data-i18n="settings.accountHint">
+      There is one account. Changing the password logs out every other session.
+    </p>
+    <form id="vAccountForm">
+      <div class="field">
+        <label for="vAccountEmailInput" data-i18n="settings.email">Email</label>
+        <input type="email" id="vAccountEmailInput" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="vAccountPasswordInput" data-i18n="settings.newPassword">New password</label>
+        <input type="password" id="vAccountPasswordInput" autocomplete="new-password"
+               minlength="12" placeholder="••••••••••••">
+        <p class="field-hint" data-i18n="settings.passwordHint">At least 12 characters. Leave empty to keep the current one.</p>
+      </div>
+      <div class="field">
+        <label for="vCurrentPasswordInput" data-i18n="settings.currentPassword">Current password</label>
+        <input type="password" id="vCurrentPasswordInput" autocomplete="current-password"
+               placeholder="••••••••••••">
+        <p class="field-hint" data-i18n="settings.currentPasswordHint">Only needed to change the password. It is what makes this a change rather than a takeover by whoever finds this browser open.</p>
+      </div>
+      <button type="submit" class="button button-primary" data-i18n="common.save">Save</button>
+      <button type="button" class="button" data-discard="account"
+              data-i18n="common.discard">Discard changes</button>
+    </form>
+  </div>
+</section>
+
+<!-- Email --------------------------------------------------------------- -->
+<section class="tab-panel" data-panel="email" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.smtp">Email sending (SMTP)</h2>
+    <p class="panel-hint" data-i18n="settings.smtpHint">
+      Used to email you when something needs attention.
+    </p>
+    <form id="vSmtpForm">
+      <div class="field-row">
+        <div class="field">
+          <label for="vSmtpHostInput" data-i18n="settings.smtpHost">Server</label>
+          <input type="text" id="vSmtpHostInput" placeholder="smtp.example.com">
+        </div>
+        <div class="field">
+          <label for="vSmtpPortInput" data-i18n="settings.smtpPort">Port</label>
+          <input type="number" id="vSmtpPortInput" placeholder="587">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="vSmtpUserInput" data-i18n="settings.smtpUser">User</label>
+          <input type="text" id="vSmtpUserInput" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="vSmtpPasswordInput" data-i18n="settings.smtpPassword">Password</label>
+          <input type="password" id="vSmtpPasswordInput" autocomplete="new-password">
+        </div>
+      </div>
+      <p class="field-hint" id="vSmtpPasswordState"></p>
+      <button type="submit" class="button button-primary" data-i18n="common.save">Save</button>
+      <button type="button" class="button" data-discard="email"
+              data-i18n="common.discard">Discard changes</button>
+    </form>
+  </div>
+
+  <!-- Reading is a separate server from sending, and a far more sensitive one:
+       these credentials are the account, not the ability to send from it. -->
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.imap">Mailbox (IMAP)</h2>
+    <p class="panel-hint" data-i18n="settings.imapHint">
+      The mailbox the mail.* tools read. Agents never see these credentials:
+      they ask the agent API, which runs as boa and holds them. Leave it empty
+      and every mail tool refuses.
+    </p>
+    <form id="vImapForm">
+      <div class="field-row">
+        <div class="field">
+          <label for="vImapHostInput" data-i18n="settings.imapHost">Server</label>
+          <input type="text" id="vImapHostInput" placeholder="imap.example.com">
+        </div>
+        <div class="field">
+          <label for="vImapPortInput" data-i18n="settings.imapPort">Port</label>
+          <input type="number" id="vImapPortInput" placeholder="993">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="vImapUserInput" data-i18n="settings.imapUser">User</label>
+          <input type="text" id="vImapUserInput" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="vImapPasswordInput" data-i18n="settings.imapPassword">Password</label>
+          <input type="password" id="vImapPasswordInput" autocomplete="new-password">
+        </div>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="vImapSslInput" checked>
+        <label for="vImapSslInput">
+          <div data-i18n="settings.imapSsl">Connect with TLS (port 993)</div>
+          <div class="field-hint" data-i18n="settings.imapSslHint">
+            Off means plain IMAP upgraded with STARTTLS, which is what a server
+            on port 143 usually wants.
+          </div>
+        </label>
+      </div>
+
+      <div class="field">
+        <label for="vForwardAllowedInput" data-i18n="settings.forwardAllowed">
+          Addresses mail.forward may send to
+        </label>
+        <input type="text" id="vForwardAllowedInput"
+               placeholder="me@example.com, @mycompany.com">
+        <p class="field-hint" data-i18n="settings.forwardAllowedHint">
+          Comma separated. An entry starting with @ allows a whole domain.
+          Checked by the server on every forward, not by the agent: a mailbox
+          is read by an agent whose instructions arrive inside the messages it
+          reads, so this cannot be a line in a prompt. Empty means forwarding
+          is refused outright.
+        </p>
+      </div>
+
+      <p class="field-hint" id="vImapPasswordState"></p>
+      <button type="submit" class="button button-primary" data-i18n="common.save">Save</button>
+      <button type="button" class="button" data-discard="email"
+              data-i18n="common.discard">Discard changes</button>
+    </form>
+  </div>
+</section>
+
+<!-- API keys ------------------------------------------------------------ -->
+<section class="tab-panel" data-panel="keys" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.keysTitle">Provider API keys</h2>
+    <p class="panel-hint" data-i18n="settings.keysHint">
+      Shared by every agent. An agent can override its own with a
+      keys/&lt;provider&gt;.key file in its home directory, which is how one
+      agent gets billed to a different account.
+    </p>
+    <div class="notice" data-i18n="settings.keysWarning">
+      A key is only handed to an agent configured for that provider, and only
+      when it runs. An agent that legitimately uses a paid provider does hold
+      its key while running: it needs it to make the call.
+    </div>
+  </div>
+
+  <!-- One box per provider, built by fRenderApiKeyForms. -->
+  <div id="vApiKeyForms"></div>
+</section>
+
+<!-- Channels ------------------------------------------------------------ -->
+<section class="tab-panel" data-panel="channels" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.channels">Channels</h2>
+    <p class="panel-hint" data-i18n="settings.channelsHint">
+      Credentials are written to /opt/boa/config/channels/ as root:boa 0640. No
+      agent can read them; agents send through the agent API instead.
+    </p>
+  </div>
+
+  <!-- One box per channel, built by fRenderChannelForms: each one is its own
+       set of credentials with its own Save, the way SMTP and IMAP are two
+       boxes rather than one. -->
+  <div id="vChannelForms"></div>
+</section>
+
+<!-- Installed tools ----------------------------------------------------- -->
+<section class="tab-panel" data-panel="tools" hidden>
+  {% include "settings_tools.html" %}
+</section>
+
+<!-- Agents ------------------------------------------------------------- -->
+<section class="tab-panel" data-panel="agents" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.agentsTitle">All agents</h2>
+    <p class="panel-hint" data-i18n="settings.agentsHint">
+      Settings that apply to every agent in this installation. Kept on the
+      server, not in this browser: a run started by cron has no browser.
+    </p>
+    <div class="field">
+      <label for="vAgentLanguageInput" data-i18n="settings.agentLanguage">
+        Language agents answer in
+      </label>
+      <select id="vAgentLanguageInput">
+        <option value="" data-i18n="settings.agentLanguagePrompt">
+          The language each agent's own prompt is written in
+        </option>
+        <option value="de-DE">Deutsch (Deutschland)</option>
+        <option value="en-GB">English (United Kingdom)</option>
+        <option value="en-US">English (United States)</option>
+        <option value="es-AR">Español (Argentina)</option>
+        <option value="es-ES">Español (España)</option>
+        <option value="fr-FR">Français (France)</option>
+        <option value="hi-IN">हिन्दी (भारत)</option>
+        <option value="it-IT">Italiano (Italia)</option>
+        <option value="ja-JP">日本語 (日本)</option>
+        <option value="ko-KR">한국어 (대한민국)</option>
+        <option value="pt-BR">Português (Brasil)</option>
+        <option value="pt-PT">Português (Portugal)</option>
+        <option value="ru-RU">Русский (Россия)</option>
+        <option value="zh-CN">简体中文 (中国)</option>
+      </select>
+      <p class="field-hint" data-i18n="settings.agentLanguageHint">
+        Adds one line to every agent's system prompt. A run woken by cron has
+        no other way to know: nobody wrote to it, and the language of this
+        interface is a preference in your browser that the server never sees.
+      </p>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="button button-primary" data-save="agents"
+              data-i18n="common.save">Save</button>
+      <button type="button" class="button" data-discard="agents"
+              data-i18n="common.discard">Discard changes</button>
+      <span class="field-hint unsaved-hint" data-unsaved="agents" hidden
+            data-i18n="settings.unsaved">Unsaved changes</span>
+    </div>
+  </div>
+</section>
+
+<section class="tab-panel" data-panel="chat" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.chatTitle">Chat window</h2>
+    <p class="panel-hint" data-i18n="settings.chatHint">
+      How the message box behaves. Stored in this browser, because it describes
+      how you type on this machine.
+    </p>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vSendOnEnterInput">
+      <label for="vSendOnEnterInput">
+        <div data-i18n="settings.sendOnEnter">Send messages with Enter</div>
+        <div class="field-hint" data-i18n="settings.sendOnEnterHint">
+          On: Enter sends and Shift+Enter starts a new line. Off: Enter starts a
+          new line and the Send button is the only way to send.
+        </div>
+      </label>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vShowChatCostInput">
+      <label for="vShowChatCostInput">
+        <div data-i18n="settings.showChatCost">Show what each answer cost</div>
+        <div class="field-hint" data-i18n="settings.showChatCostHint">
+          Tokens and steps under each reply. Worth leaving on until you know
+          what your agents normally spend.
+        </div>
+      </label>
+    </div>
+
+    <!-- Every tab that holds editable settings ends the same way, so where
+         Save is never depends on which tab you are looking at. -->
+    <div class="form-actions">
+      <button type="button" class="button button-primary" data-save="chat"
+              data-i18n="common.save">Save</button>
+      <button type="button" class="button" data-discard="chat"
+              data-i18n="common.discard">Discard changes</button>
+      <span class="field-hint unsaved-hint" data-unsaved="chat" hidden
+            data-i18n="settings.unsaved">Unsaved changes</span>
+    </div>
+  </div>
+</section>
+
+<!-- Kanban -------------------------------------------------------------- -->
+<section class="tab-panel" data-panel="kanban" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.kanbanTitle">Kanban board</h2>
+    <div class="field">
+      <label for="vKanbanLimitInput" data-i18n="settings.kanbanLimit">Cards shown per column</label>
+      <input type="number" id="vKanbanLimitInput" min="5" max="500">
+      <p class="field-hint" data-i18n="settings.kanbanLimitHint">
+        Only affects what the board shows. Nothing is deleted.
+      </p>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vShowDeletedInput">
+      <label for="vShowDeletedInput">
+        <div data-i18n="settings.showDeleted">Show recently deleted cards</div>
+        <div class="field-hint" data-i18n="settings.showDeletedHint">
+          Deleting a card keeps a record of what it was and who removed it.
+        </div>
+      </label>
+    </div>
+
+    <!-- Every tab that holds editable settings ends the same way, so where
+         Save is never depends on which tab you are looking at. -->
+    <div class="form-actions">
+      <button type="button" class="button button-primary" data-save="kanban"
+              data-i18n="common.save">Save</button>
+      <button type="button" class="button" data-discard="kanban"
+              data-i18n="common.discard">Discard changes</button>
+      <span class="field-hint unsaved-hint" data-unsaved="kanban" hidden
+            data-i18n="settings.unsaved">Unsaved changes</span>
+    </div>
+  </div>
+
+  <div class="panel" id="vDeletedCardsPanel" hidden>
+    <h2 class="panel-title" data-i18n="settings.deletedTitle">Deleted cards</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th data-i18n="settings.deletedCard">Card</th>
+          <th data-i18n="settings.deletedBy">Deleted by</th>
+          <th data-i18n="settings.deletedWhen">When</th>
+        </tr></thead>
+        <tbody id="vDeletedCardsTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Interface ----------------------------------------------------------- -->
+<section class="tab-panel" data-panel="interface" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="settings.interface">Interface</h2>
+    <div class="field">
+      <label for="vThemeInput" data-i18n="settings.theme">Theme</label>
+      <select id="vThemeInput"></select>
+      <p class="field-hint" id="vThemeHint"></p>
+      <p class="field-hint" data-i18n="settings.themeHint">
+        Stored in this browser, like the language. Themes live in
+        frontend/themes/ on the server; a new .css file there is a new theme.
+      </p>
+    </div>
+    <div class="field">
+      <label for="vLanguageInput" data-i18n="settings.language">Language</label>
+      <select id="vLanguageInput">
+        <option value="de-DE">Deutsch (Deutschland)</option>
+        <option value="en-GB">English (United Kingdom)</option>
+        <option value="en-US">English (United States)</option>
+        <option value="es-AR">Español (Argentina)</option>
+        <option value="es-ES">Español (España)</option>
+        <option value="fr-FR">Français (France)</option>
+        <option value="hi-IN">हिन्दी (भारत)</option>
+        <option value="it-IT">Italiano (Italia)</option>
+        <option value="ja-JP">日本語 (日本)</option>
+        <option value="ko-KR">한국어 (대한민국)</option>
+        <option value="pt-BR">Português (Brasil)</option>
+        <option value="pt-PT">Português (Portugal)</option>
+        <option value="ru-RU">Русский (Россия)</option>
+        <option value="zh-CN">简体中文 (中国)</option>
+      </select>
+      <p class="field-hint" data-i18n="settings.languageHint">
+        The interface only. Agents answer in the language of their own prompt.
+      </p>
+    </div>
+    <div class="field">
+      <label for="vNoticeSecondsInput" data-i18n="settings.noticeSeconds">
+        Seconds a pop-up message stays on screen
+      </label>
+      <input type="number" id="vNoticeSecondsInput" min="1" max="30" step="1">
+      <p class="field-hint" data-i18n="settings.noticeSecondsHint">
+        Confirmations appear in the middle of the panel and then leave on
+        their own. Error messages stay until they are closed, whatever this
+        says.
+      </p>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vOfferExamplesInput">
+      <label for="vOfferExamplesInput">
+        <div data-i18n="settings.offerExamples">Offer example agents when creating one</div>
+        <div class="field-hint" data-i18n="settings.offerExamplesHint">
+          The + button asks whether to start from one of the examples in
+          backend/agents/ on the server. Turn this off to go straight to the
+          name box and an empty agent.
+        </div>
+      </label>
+    </div>
+
+    <!-- Every tab that holds editable settings ends the same way, so where
+         Save is never depends on which tab you are looking at. -->
+    <div class="form-actions">
+      <button type="button" class="button button-primary" data-save="interface"
+              data-i18n="common.save">Save</button>
+      <button type="button" class="button" data-discard="interface"
+              data-i18n="common.discard">Discard changes</button>
+      <span class="field-hint unsaved-hint" data-unsaved="interface" hidden
+            data-i18n="settings.unsaved">Unsaved changes</span>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block vScripts %}
+<script src="{{ url_for('static', filename='js/tools.js') }}"></script>
+<script src="{{ url_for('static', filename='js/settings_audio.js') }}"></script>
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

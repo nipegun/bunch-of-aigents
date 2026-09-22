@@ -1,0 +1,2084 @@
+/* Bunch of AIgents - interface styles.
+ *
+ * Two constraints shape everything here.
+ *
+ * The layout must not overflow horizontally between 320px and 430px. Agent
+ * ids, model names, API tokens and card titles are all strings that arrive
+ * from outside and have no spaces in them, so every box that can hold one
+ * carries `min-width: 0` and `overflow-wrap: anywhere`. Without the first, a
+ * grid or flex child claims the width of its widest unbreakable word and drags
+ * the whole document sideways.
+ *
+ * The theme follows the system. Colours are defined once as tokens on :root
+ * and redefined under prefers-color-scheme, so nothing has a colour that only
+ * exists in one theme.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --colour-page: #e9ebef;
+  --colour-surface: #f7f8fa;
+  --colour-surface-raised: #f1f3f6;
+  --colour-border: #ccd1d9;
+  /* The bar between two readings of the status bar. Its own colour and not
+   * `--colour-border`, which is a line under something and therefore as
+   * quiet as it can be: a divider between two words has to be found by the
+   * eye scanning the strip, so it sits a step closer to the text than the
+   * borders do, and still well short of it. */
+  --colour-status-divider: #a6adb7;
+  --colour-text: #1b1d21;
+  --colour-text-dim: #63676e;
+  --colour-accent: #245cee;
+  --colour-accent-text: #ffffff;
+  --colour-danger: #c0392b;
+  --colour-ok: #27784b;
+  --colour-warn: #8f5f19;
+  --colour-state-on: #237846;
+  --colour-state-off: #c0392b;
+  --colour-todo: #636a76;
+  --colour-doing: #245cee;
+  --colour-done: #27784b;
+
+  /* A filesystem path printed for somebody to read and type back: the one on
+   * the login page. Blue, because it is a thing to look at rather than a
+   * state, and a token rather than a fixed colour so that each theme gives it
+   * a blue that can be read on that theme's background. */
+  --colour-path: #1f4fb6;
+
+  /* JSON syntax colouring, on the API documentation page. Theme variables and
+   * not fixed colours, so a theme sets its own and the contrast test holds
+   * them to the same bar as every other colour that paints text. */
+  --colour-json-key: #1f4fb6;
+  --colour-json-string: #1f6b3b;
+  --colour-json-number: #8a4a06;
+  --colour-json-literal: #77359e;
+
+  --radius: 8px;
+  --gap: 16px;
+  --sidebar-width: 260px;
+
+  /* The wrench and the lane it sits in, on the right of each agent box.
+   * --wrench-inset is its distance from the box's right edge; --wrench-lane is
+   * the space the agent's own text must leave free for it. */
+  --wrench-size: 28px;
+  --wrench-inset: 6px;
+  --wrench-lane: 42px;
+
+  /* Space above and below the chat composer. One value, used twice, so
+   * the two gaps cannot drift apart. */
+  --chat-composer-gap: 12px;
+
+  /* Height of the status bar. The sidebar subtracts it from the viewport,
+   * so both are defined by the same number. */
+  --status-bar-height: 32px;
+  /* Space between one reading of the status bar and the next. The divider
+   * sits at half of it, so both cannot drift apart. */
+  --status-divider-gap: 20px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colour-page: #16181d;
+    --colour-surface: #1e2127;
+    --colour-surface-raised: #252932;
+    --colour-border: #343945;
+    --colour-status-divider: #5b6271;
+    --colour-text: #e6e8ec;
+    --colour-text-dim: #9aa0ab;
+    --colour-accent: #5b87f5;
+    --colour-accent-text: #0f1115;
+    --colour-danger: #e1604f;
+    --colour-ok: #4cb782;
+    --colour-warn: #d9a441;
+    --colour-state-on: #4cb782;
+    --colour-state-off: #e1604f;
+    --colour-todo: #8b909b;
+    --colour-doing: #5b87f5;
+    --colour-done: #4cb782;
+
+    --colour-path: #79b2f5;
+
+    /* The same four as the light palette above, in this scheme. */
+    --colour-json-key: #79b2f5;
+    --colour-json-string: #63c58c;
+    --colour-json-number: #e0a25e;
+    --colour-json-literal: #c295ef;
+  }
+}
+
+* { box-sizing: border-box; }
+
+/* A class that sets `display` beats the user agent's [hidden] rule, so an
+ * element with both stays visible. Every toggle in this interface uses the
+ * hidden attribute, so it has to win. */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  /* Never overflow-x: hidden here. It hides the bug instead of fixing it and
+   * breaks position: sticky in every descendant. */
+}
+
+body {
+  background: var(--colour-page);
+  color: var(--colour-text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a { color: var(--colour-accent); }
+
+/* ---------------------------------------------------------------- layout -- */
+
+/* Two columns and two rows: the sidebar and the content side by side, and the
+ * status bar spanning both underneath - including under the sidebar, so it is
+ * one strip across the whole window rather than a panel inside the content. */
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 100vh;
+}
+
+.sidebar {
+  grid-row: 1;
+  grid-column: 1;
+  background: var(--colour-surface);
+  border-right: 1px solid var(--colour-border);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: sticky;
+  top: 0;
+  /* The viewport minus the status bar, so the sidebar ends where the bar
+   * begins rather than sliding underneath it. */
+  height: calc(100vh - var(--status-bar-height));
+  overflow-y: auto;
+}
+
+.main {
+  grid-row: 1;
+  grid-column: 2;
+  min-width: 0; /* Without this the grid column grows to fit its content. */
+  padding: var(--gap);
+  padding-block: var(--gap);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--gap);
+  border-bottom: 1px solid var(--colour-border);
+  min-width: 0;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--radius);
+  padding: 2px 4px;
+  margin: -2px -4px;
+}
+
+.brand-link:hover { background: var(--colour-surface-raised); }
+
+.brand-name {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  /* "BoA (Bunch of AIgents)" is long for a 260px sidebar, so it is allowed to
+   * shrink a little rather than take two lines next to the mark. */
+  font-size: 14px;
+}
+
+/* The shield with the three robots in it. A fixed size rather than an em:
+ * it is a mark, not text, and it should not grow if somebody's browser is set
+ * to a larger font. `alt=""` in the markup on purpose - the name is right
+ * next to it, and a screen reader announcing both would say it twice. */
+.brand-logo {
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+
+/* ------------------------------------------------------------ agent list -- */
+
+.agent-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px var(--gap) 8px;
+  min-width: 0;
+}
+
+.agent-list-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--colour-text-dim);
+  min-width: 0;
+}
+
+.agent-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* One agent is one box. The box opens the chat; the wrench inside it, on the
+ * right, opens the settings. The wrench is a sibling rather than a child
+ * because a button cannot be nested inside another button. */
+.agent-item {
+  position: relative;
+  min-width: 0;
+  margin-bottom: 2px;
+  border-radius: var(--radius);
+}
+
+.agent-item:hover { background: var(--colour-surface-raised); }
+
+.agent-item[data-selected="true"] { background: var(--colour-accent); }
+
+.agent-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  /* Right padding leaves room for the wrench, so a long agent name is cut by
+   * the text rules rather than running underneath the icon. */
+  padding: 9px var(--wrench-lane) 9px 10px;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--colour-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.agent-item[data-selected="true"] .agent-button,
+.agent-button[aria-current="true"] { color: var(--colour-accent-text); }
+
+.agent-item[data-selected="true"] .agent-meta { color: inherit; opacity: 0.85; }
+
+/* The wrench: vertically centred with top/bottom 50%/translate, horizontally
+ * centred inside its own lane on the right. `right` keeps it clear of the
+ * box's right edge, and the lane is narrower than the box, so it never touches
+ * the top, bottom or right border. */
+.agent-settings-button {
+  position: absolute;
+  top: 50%;
+  right: var(--wrench-inset);
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--wrench-size);
+  height: var(--wrench-size);
+  padding: 0;
+
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--colour-text-dim);
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.agent-settings-button:hover {
+  background: var(--colour-surface);
+  color: var(--colour-text);
+  opacity: 1;
+}
+
+.agent-settings-button:focus-visible {
+  outline: 2px solid var(--colour-accent);
+  outline-offset: 1px;
+  opacity: 1;
+}
+
+.agent-item[data-selected="true"] .agent-settings-button {
+  color: var(--colour-accent-text);
+  opacity: 0.8;
+}
+
+.agent-item[data-selected="true"] .agent-settings-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+}
+
+/* Settings are open for this agent: the whole outline of the wrench lights up,
+ * so which agent you are configuring is visible without reading anything. */
+.agent-settings-button[aria-pressed="true"] {
+  background: var(--colour-surface);
+  color: var(--colour-accent);
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--colour-accent), 0 0 8px -2px var(--colour-accent);
+}
+
+.agent-item[data-selected="true"] .agent-settings-button[aria-pressed="true"] {
+  background: var(--colour-surface);
+  color: var(--colour-accent);
+  box-shadow: 0 0 0 2px var(--colour-accent-text),
+              0 0 8px -2px var(--colour-accent-text);
+}
+
+.agent-settings-button svg { display: block; }
+
+/* The avatar's own outline says whether the agent is on: green when it is, red
+ * when it is not. A ring around the thing it describes is read at a glance;
+ * a separate dot somewhere else has to be found first. */
+.agent-avatar {
+  position: relative;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--colour-surface-raised);
+  border: 2px solid var(--colour-state-off);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--colour-text-dim);
+  box-shadow: 0 0 0 1px transparent;
+}
+
+.agent-avatar[data-enabled="true"] {
+  border-color: var(--colour-state-on);
+  box-shadow: 0 0 6px -1px var(--colour-state-on);
+}
+
+.agent-avatar[data-enabled="false"] {
+  border-color: var(--colour-state-off);
+  box-shadow: 0 0 6px -1px var(--colour-state-off);
+}
+
+/* An agent with a run in flight sends a light round its own outline ---------
+ *
+ * On/off is a colour and does not move; working is movement. Two facts, two
+ * channels, so neither has to be looked up: a second static colour would have
+ * to be learnt, whereas something turning is understood without being taught.
+ *
+ * It is drawn as an SVG rounded rectangle laid exactly over the border, with a
+ * dashed stroke whose offset is animated. The SHAPE therefore stays still and
+ * only the dash travels along it, which is what makes the light follow the
+ * rounded square. Rotating a ring instead - a conic gradient, an arc, anything
+ * with `transform: rotate` - turns the shape itself, so the corners end up in
+ * the wrong places and it stops matching the avatar underneath.
+ *
+ * `pathLength="100"` on the rect rescales the outline to 100 units, so the
+ * dash lengths below are percentages of the perimeter and none of this has to
+ * be recomputed if the avatar or its radius ever changes. A `rect` is drawn
+ * clockwise from its top left, so a negative offset sends the dash that way.
+ */
+.agent-avatar-arc {
+  position: absolute;
+  /* Out by the width of the border: an absolutely positioned child is placed
+   * against the padding box, and the stroke has to land on the border. */
+  top: -2px;
+  left: -2px;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+}
+
+.agent-avatar-arc rect {
+  fill: none;
+  stroke: var(--colour-state-on);
+  stroke-width: 2;
+  stroke-linecap: round;
+  /* A little over a quarter of the outline lit, the rest dark. */
+  stroke-dasharray: 28 72;
+  animation: kAgentAvatarArc 1.1s linear infinite;
+}
+
+@keyframes kAgentAvatarArc {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -100; }
+}
+
+/* The border underneath keeps saying on or off - it must never turn red under
+ * a working agent - but it steps back so that the travelling light reads as
+ * one bright point going round the outline, which is the whole idea: the same
+ * green ring, turning.
+ *
+ * A browser without color-mix keeps the border at full strength, which is
+ * still the right colour and still the right meaning; only the contrast with
+ * the light is smaller. */
+.agent-avatar[data-running="true"][data-enabled="true"] {
+  border-color: color-mix(in srgb, var(--colour-state-on) 35%, transparent);
+}
+
+.agent-avatar[data-running="true"][data-enabled="false"] {
+  border-color: color-mix(in srgb, var(--colour-state-off) 35%, transparent);
+}
+
+/* Asking for less motion must not cost the user the fact itself. The lit
+ * segment stays where it is instead of disappearing, and the halo is turned
+ * up: a part-lit outline with a brighter glow is still plainly a different
+ * thing from a ring lit all the way round. */
+@media (prefers-reduced-motion: reduce) {
+  .agent-avatar-arc rect {
+    animation: none;
+  }
+
+  .agent-avatar[data-running="true"] {
+    box-shadow: 0 0 10px 0 var(--colour-state-on);
+  }
+}
+
+.agent-text { min-width: 0; }
+
+/* Every agent's box is the same height, and this is what makes it so: one
+ * line for the name, one for the totals, cut with an ellipsis rather than
+ * allowed to wrap. A list where one box is two lines taller than the next
+ * reads as if those two agents were different kinds of thing, and the eye
+ * spends the difference working out that they are not.
+ *
+ * Cutting is safe here where wrapping would normally be required of a block
+ * holding user text: `overflow: hidden` on a flex child with `min-width: 0`
+ * claims no width of its own, so a 40-character name with no spaces in it
+ * still cannot push the sidebar sideways. The button carries the full name as
+ * its tooltip, so nothing is lost by cutting it. */
+.agent-name,
+.agent-meta {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-name {
+  font-weight: 550;
+}
+
+.agent-meta {
+  font-size: 12px;
+  color: var(--colour-text-dim);
+}
+
+/* ------------------------------------------------------------- controls -- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-surface);
+  color: var(--colour-text);
+  font: inherit;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.button:hover { background: var(--colour-surface-raised); }
+
+.button-primary {
+  background: var(--colour-accent);
+  border-color: var(--colour-accent);
+  color: var(--colour-accent-text);
+}
+
+/* A control that cannot be used has to look it. Measuring `disabled` in the
+ * DOM is not the same as a person being able to tell. */
+.button:disabled,
+.button:disabled:hover {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: var(--colour-surface);
+  border-color: var(--colour-border);
+  color: var(--colour-text-dim);
+}
+
+.field input:disabled,
+.field textarea:disabled,
+.chat-composer textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button-danger { color: var(--colour-danger); }
+
+.button-add {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  font-size: 20px;
+  line-height: 1;
+  border-radius: var(--radius);
+}
+
+.nav {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  border-top: 1px solid var(--colour-border);
+}
+
+.nav a,
+.nav button {
+  display: block;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  color: var(--colour-text);
+  text-decoration: none;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nav button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav a:hover,
+.nav button:hover { background: var(--colour-surface-raised); }
+.nav a[aria-current="page"] { background: var(--colour-surface-raised); font-weight: 600; }
+
+/* ----------------------------------------------------------------- cards -- */
+
+.panel {
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  padding: var(--gap);
+  margin-bottom: var(--gap);
+  min-width: 0;
+}
+
+.panel-title {
+  margin: 0 0 4px;
+  font-size: 17px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.panel-hint {
+  margin: 0 0 14px;
+  color: var(--colour-text-dim);
+  font-size: 13px;
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: var(--gap);
+  min-width: 0;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 20px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ----------------------------------------------------------------- forms -- */
+
+.field { margin-bottom: 14px; min-width: 0; }
+
+.field label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--colour-text-dim);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-page);
+  color: var(--colour-text);
+  font: inherit;
+}
+
+.field textarea {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  min-height: 140px;
+  resize: vertical;
+}
+
+.field-hint {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  overflow-wrap: anywhere;
+}
+
+/* Green when an API key is stored or a channel is configured. */
+.field-hint[data-state="good"] {
+  color: var(--colour-ok);
+  font-weight: 550;
+}
+
+/* A field whose value is accepted but will not do what the user expects.
+ * Amber, not red: nothing is wrong with the form, the outcome is. */
+.field-warning {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--colour-warn);
+  overflow-wrap: anywhere;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 0 var(--gap);
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 7px 0;
+  min-width: 0;
+}
+
+.checkbox-row input { flex: none; margin-top: 3px; }
+.checkbox-row > div { min-width: 0; }
+.checkbox-row label { margin: 0; font-weight: 500; color: var(--colour-text); }
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--gap);
+}
+
+/* ---------------------------------------------------------------- kanban -- */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: var(--gap);
+  align-items: start;
+}
+
+.column {
+  background: var(--colour-surface);
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  padding: 12px;
+  min-width: 0;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+  min-width: 0;
+}
+
+.column-name {
+  font-weight: 650;
+  text-transform: capitalize;
+  min-width: 0;
+}
+
+.column-count {
+  flex: none;
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  font-family: var(--font-mono);
+}
+
+.column[data-state="todo"] .column-name { color: var(--colour-todo); }
+.column[data-state="doing"] .column-name { color: var(--colour-doing); }
+.column[data-state="done"] .column-name { color: var(--colour-done); }
+
+.card {
+  background: var(--colour-surface-raised);
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  padding: 10px 11px;
+  margin-bottom: 9px;
+  min-width: 0;
+}
+
+/* Who it is from, who has it and when it was made: the line above the title,
+ * because it is what you scan a column by. */
+.card-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  margin-bottom: 5px;
+  font-size: 11px;
+  color: var(--colour-text-dim);
+  font-family: var(--font-mono);
+  min-width: 0;
+}
+
+.card-id { font-weight: 650; }
+
+/* Two lines for the title and three for the body.
+ *
+ * An agent writing up what it found produces a body of twenty lines, and one
+ * card was filling the column with the next two off screen. A board is for
+ * seeing what there is; the whole text is in the tooltip. */
+.card-title {
+  font-weight: 550;
+  min-width: 0;
+  /* Card titles come from a model and can be one long unbroken string. */
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-body {
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--colour-text-dim);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* When it runs. A card with no time is not late and is not broken, and with
+ * nothing saying so it looks like both. */
+.card-schedule {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.card-waiting { font-style: italic; }
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  font-family: var(--font-mono);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+/* "Doing" and "Done" on their own read as labels rather than as the buttons
+ * that move the card, which is all they are: this board has no dragging, so
+ * they are how a person moves one by hand. */
+.card-actions-label {
+  font-size: 12px;
+  color: var(--colour-text-dim);
+}
+
+.card-actions .button {
+  padding: 4px 9px;
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------------ chat -- */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  /* Fills what is left of the viewport under the header, so the composer sits
+   * at the bottom and the log scrolls, rather than the whole page scrolling. */
+  height: calc(100vh - 2 * var(--gap) - 52px - var(--status-bar-height));
+  min-height: 320px;
+  min-width: 0;
+}
+
+.chat-log {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-width: 0;
+  padding: 4px 2px;
+}
+
+.chat-message {
+  max-width: min(680px, 92%);
+  margin-bottom: 12px;
+  padding: 10px 13px;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-surface);
+  min-width: 0;
+  /* Answers contain paths, commands and tokens: unbreakable strings that would
+   * otherwise push the layout sideways. */
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.chat-message[data-role="user"] {
+  margin-left: auto;
+  background: var(--colour-accent);
+  border-color: var(--colour-accent);
+  color: var(--colour-accent-text);
+}
+
+.chat-message[data-role="error"] {
+  border-color: var(--colour-danger);
+  color: var(--colour-danger);
+}
+
+/* A card that came due and woke the agent. It sits on the agent's side of the
+ * conversation, because that is where the work arrived, and it is told apart by
+ * an accented outline rather than by a fill: the user's own message is the one
+ * that is filled in, and a second filled bubble would compete with it. The
+ * high-contrast themes need no exception for the same reason. */
+/* On the right, with the user's own messages, because that is what it is: a
+ * card is something the agent was ASKED to do, not something it said. Which
+ * side a bubble is on answers "who is talking?", and a request read as an
+ * answer from the agent - which is how this looked before.
+ *
+ * It keeps its own outline rather than the user's fill: it is a request, but
+ * not one anybody typed. */
+.chat-message[data-role="card"] {
+  margin-left: auto;
+  border-color: var(--colour-accent);
+  background: var(--colour-surface-raised);
+}
+
+.chat-card-heading {
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.chat-card-field + .chat-card-field { margin-top: 2px; }
+
+/* A report from a run nobody asked for. Marked with the dimmed border rather
+ * than with the accent: a card that came due was a request, and this is the
+ * agent talking on its own. */
+.chat-message[data-role="run"] {
+  border-style: dashed;
+  background: var(--colour-surface-raised);
+}
+
+.chat-message[data-pending="true"] { opacity: 0.75; }
+
+/* ------------------------------------------------ markdown in a bubble -- */
+
+/* The bubble keeps `white-space: pre-wrap` for the lines it shows verbatim -
+ * the user's own message and an error. Rendered markdown brings its own
+ * blocks, so inside it the browser wraps normally. */
+.md { white-space: normal; min-width: 0; }
+
+/* First and last child sit flush with the bubble's padding: a leading margin
+ * would read as a bubble that is padded unevenly. */
+.md > :first-child { margin-top: 0; }
+.md > :last-child { margin-bottom: 0; }
+
+.md p { margin: 0 0 9px; }
+
+.md h3, .md h4, .md h5, .md h6 {
+  margin: 14px 0 7px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+/* Every level stays at or above the body text: a heading smaller and greyer
+ * than the paragraph it introduces inverts the order it is there to show. */
+.md h3 { font-size: 17px; }
+.md h4 { font-size: 15px; }
+.md h5 { font-size: 14px; }
+.md h6 { font-size: 14px; color: var(--colour-text-dim); }
+
+.md ul, .md ol { margin: 0 0 9px; padding-left: 22px; }
+.md li { margin-bottom: 3px; }
+.md li:last-child { margin-bottom: 0; }
+
+.md code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--colour-surface-raised);
+  border: 1px solid var(--colour-border);
+}
+
+/* A command must not be rewrapped where it would change meaning, so the block
+ * scrolls inside its own box rather than folding. */
+.md pre.md-code {
+  margin: 0 0 9px;
+  padding: 9px 11px;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-surface-raised);
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre;
+}
+
+.md pre.md-code code {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.md blockquote.md-quote {
+  margin: 0 0 9px;
+  padding: 2px 0 2px 11px;
+  border-left: 3px solid var(--colour-border);
+  color: var(--colour-text-dim);
+}
+
+.md hr {
+  margin: 12px 0;
+  border: 0;
+  border-top: 1px solid var(--colour-border);
+}
+
+/* A wide table scrolls inside the bubble instead of dragging the page. */
+.md .md-table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 0 0 9px;
+}
+
+.md table { font-size: 13px; }
+.md th, .md td { padding: 5px 8px; vertical-align: top; }
+.md thead th {
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  white-space: nowrap;
+}
+.md tbody tr:last-child th,
+.md tbody tr:last-child td { border-bottom: 0; }
+
+.md a { color: inherit; text-decoration: underline; }
+
+/* Inside the user's own bubble the accent background is the ground, so the
+ * raised surfaces and dim greys of the palette would vanish into it. */
+.chat-message[data-role="user"] .md code,
+.chat-message[data-role="user"] .md pre.md-code {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 640px) {
+  /* 13px fits about 35 characters per line on a 360px screen, which is not
+   * enough for a shell command. */
+  .md pre.md-code { padding: 7px 8px; }
+  .md pre.md-code code { font-size: 11.5px; }
+  .md table { font-size: 12px; }
+  .md th, .md td { padding: 4px 6px; }
+}
+
+.chat-meta {
+  margin-top: 7px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  opacity: 0.7;
+  overflow-wrap: anywhere;
+}
+
+
+/* A run cut short by one of its ceilings. Amber rather than red: nothing
+ * failed, the agent simply ran out of budget with the answer half written. */
+.chat-ceiling {
+  margin-top: 7px;
+  padding-top: 7px;
+  border-top: 1px solid var(--colour-border);
+  font-size: 12px;
+  color: var(--colour-warn);
+  overflow-wrap: anywhere;
+}
+
+/* The same gap above the field as below it: the rule that separates the
+ * conversation from the composer sits exactly one --chat-composer-gap away
+ * from the text box, and so does the bottom of the panel. */
+.chat-composer {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  padding-top: var(--chat-composer-gap);
+  padding-bottom: var(--chat-composer-gap);
+  border-top: 1px solid var(--colour-border);
+  min-width: 0;
+}
+
+/* The button's lane. The button is centred in it both ways, so it stays in the
+ * middle of the space it was given however tall the text box grows. */
+.chat-send-lane {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-composer textarea {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-page);
+  color: var(--colour-text);
+  font: inherit;
+  resize: vertical;
+}
+
+
+
+.chat-typing {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.chat-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  animation: chat-blink 1.2s infinite;
+}
+
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes chat-blink {
+  0%, 60%, 100% { opacity: 0.25; }
+  30% { opacity: 0.9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-typing span { animation: none; opacity: 0.5; }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Machine details and service states share the same two column widths. */
+.system-table { table-layout: fixed; }
+.system-table th {
+  width: 35%;
+  white-space: normal;
+}
+.system-table th,
+.system-table td { overflow-wrap: anywhere; }
+
+#vServicesTable th { font-family: var(--font-mono); font-size: 13px; }
+
+/* A value that is wrong is red wherever it appears. */
+td[data-state="bad"] {
+  color: var(--colour-danger);
+  font-weight: 550;
+}
+
+/* Green only where the state is binary and worth confirming: a service is
+ * either running or it is not. The memory and disk rows stay in the normal
+ * colour while they are fine - a screen of green reads as decoration and stops
+ * being noticed, which defeats the point of colouring the bad one. */
+#vServicesTable td[data-state="good"] {
+  color: var(--colour-ok);
+  font-weight: 550;
+}
+
+/* Each channel, and each provider key, is a box of its own - the way SMTP and
+ * IMAP are two boxes on the Email tab rather than one box with a rule down the
+ * middle. They are separate sets of credentials with separate Save buttons,
+ * and a rule between them made that look like one form with sections. */
+.channel-form { min-width: 0; }
+
+/* The state line sits above the field, not against its label. */
+.channel-form > .field-hint { margin: 0 0 12px; }
+
+/* One run in the History tab ------------------------------------------------
+ *
+ * A run that nobody asked for used to leave a number of steps and a number of
+ * tokens. What it actually said went to standard output and, under cron, to a
+ * mailbox nobody opens. This is where that text is read now. */
+.run-entry {
+  border-top: 1px solid var(--colour-border);
+  padding-top: 12px;
+  margin-top: 12px;
+  min-width: 0;
+}
+
+.run-entry:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+
+.run-entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  font-family: var(--font-mono);
+  min-width: 0;
+}
+
+.run-status { font-weight: 650; }
+.run-entry-head .run-status { color: var(--colour-text); }
+
+.run-error {
+  margin-top: 6px;
+  color: var(--colour-danger);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.run-answer { margin-top: 8px; }
+
+/* Images fill the message's text area, including tall screenshots. */
+.chat-attachment {
+  margin: 12px 0;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.chat-attachment a { display: block; overflow-wrap: anywhere; }
+
+.chat-attachment img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+}
+
+.chat-attachment-name,
+.chat-attachment-caption {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* A report in the conversation says so before it says anything else: without
+ * it, it reads as a reply to whatever was said above, which could have been
+ * days ago. */
+.chat-run-heading {
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  margin-bottom: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------------------- dialogs -- */
+
+.app-dialog {
+  /* <dialog> comes with the user agent's own border, padding and margin. */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-surface);
+  color: var(--colour-text);
+  max-width: min(440px, calc(100% - 2 * var(--gap)));
+  max-height: calc(100% - 2 * var(--gap));
+  width: 100%;
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.5);
+}
+
+.app-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.app-dialog-form { padding: var(--gap); min-width: 0; }
+
+.app-dialog-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-dialog-message {
+  margin: 0 0 14px;
+  color: var(--colour-text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-dialog-field { margin-bottom: 0; }
+
+.app-dialog-input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-page);
+  color: var(--colour-text);
+  font: inherit;
+}
+
+.app-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+/* Where the keyboard is, in a dialog, is not a detail: the safe button holds
+ * the focus on purpose, and somebody who cannot see that presses Enter
+ * expecting to confirm and cancels instead. `:focus`, not `:focus-visible` -
+ * the browser leaves the ring off when the focus was moved by script after a
+ * click, which is exactly this case. */
+.app-dialog-actions .button:focus {
+  outline: 3px solid var(--colour-accent);
+  outline-offset: 2px;
+}
+
+/* A menu of things to create, one button per choice with its description
+ * underneath. A <select> would show one line at a time, and the descriptions
+ * are the part that makes the choice: "Watches disk, memory and the services"
+ * says more than the name ever will. */
+.app-dialog-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  /* Eight examples is more than fits on a laptop with a dialog around them. */
+  max-height: min(52vh, 420px);
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.app-dialog-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-surface-raised);
+  color: var(--colour-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.app-dialog-choice:hover {
+  border-color: var(--colour-accent);
+}
+
+.app-dialog-choice:focus {
+  outline: 3px solid var(--colour-accent);
+  outline-offset: 2px;
+}
+
+.app-dialog-choice-name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.app-dialog-choice-hint {
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  overflow-wrap: anywhere;
+}
+
+/* What choosing it actually grants. Monospaced and a shade quieter than the
+ * description: it is a fact to check, not a sentence to read. */
+.app-dialog-choice-detail {
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--colour-text-dim);
+  opacity: 0.85;
+  overflow-wrap: anywhere;
+}
+
+/* A destructive confirmation looks destructive. */
+.button-danger-solid {
+  background: var(--colour-danger);
+  border-color: var(--colour-danger);
+  color: #ffffff;
+}
+
+.button-danger-solid:hover {
+  background: var(--colour-danger);
+  opacity: 0.9;
+}
+
+@media (max-width: 480px) {
+  .app-dialog-actions { flex-direction: column-reverse; }
+  .app-dialog-actions .button { width: 100%; }
+}
+
+/* "Unsaved changes", next to the Save it is asking for. Warn-coloured rather
+ * than danger: nothing is wrong, something is merely not finished. */
+.unsaved-hint[data-unsaved] {
+  align-self: center;
+  color: var(--colour-warn);
+  font-weight: 550;
+}
+
+/* Tools, one box per family -----------------------------------------------
+ *
+ * There are enough of them now that one flat list is a wall. Each family is a
+ * box of its own, like every other group of settings in the application:
+ * "may this agent read the mailbox?" is a decision, and a decision is drawn
+ * as a box here. The count goes on the box's own title, and the gap between
+ * boxes is the separation, so there is no rule between families to draw. */
+.tool-group-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 10px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* How many of the group this agent has. The difference between "I gave it no
+ * mail tools" and "there are no mail tools" is worth one glance. */
+.tool-group-count {
+  flex: none;
+  font-size: 13px;
+  font-weight: 550;
+  font-family: var(--font-mono);
+  color: var(--colour-text-dim);
+}
+
+/* How many tools a tab holds, on the tab itself: with fifteen of them spread
+ * over seven tabs, the count is what says whether a family is worth opening. */
+.tab-count {
+  margin-left: 6px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--colour-text-dim);
+}
+
+/* Inside the Others tab the family is the only thing that says where a tool
+ * came from, because that tab holds more than one. */
+.tool-family-tag {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 550;
+  font-family: var(--font-mono);
+  color: var(--colour-text-dim);
+}
+
+/* The kanban switch sits at the foot of the kanban box, under a rule, because
+ * it is not one more tool: it decides what all of them do. With no kanban
+ * tools installed it becomes a box of its own and the rule would have nothing
+ * above it. */
+.agent-kanban-switch {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--colour-border);
+}
+
+.agent-kanban-switch.panel {
+  margin-top: 0;
+  padding-top: var(--gap);
+  border-top: 1px solid var(--colour-border);
+}
+
+/* The API documentation fills the column it is given, like every other page.
+ * It used to keep an 900px measure and centre itself, which reads well for
+ * prose and badly for this: the page is mostly tables of parameters and
+ * blocks of JSON, and those were being squeezed into a third of a wide screen
+ * with empty gutters either side. It renders both inside the application
+ * frame and on its own, and `.main` supplies the padding in both. */
+.api-doc {
+  min-width: 0;
+}
+
+/* These four used to be `style=` attributes, and the Content-Security-Policy
+ * (`style-src 'self'`, no unsafe-inline) threw every one of them away: the
+ * introduction lost the blank line between its two paragraphs and nobody
+ * could see why. An inline style in this application is a style that does not
+ * exist. */
+.api-doc-intro {
+  white-space: pre-wrap;
+}
+
+.endpoint-summary { margin-top: 0; }
+.endpoint-label { margin-bottom: 4px; }
+
+.crontab-input { min-height: 100px; }
+
+/* ------------------------------------------------------------------ tabs -- */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-bottom: var(--gap);
+  border-bottom: 1px solid var(--colour-border);
+  min-width: 0;
+}
+
+.tab {
+  padding: 9px 14px;
+  border: 0;
+  /* The selected tab is marked by a line under it, which is why the border
+   * is on every tab rather than only the current one: otherwise selecting a
+   * tab would move the whole row by two pixels. */
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--colour-text-dim);
+  font: inherit;
+  cursor: pointer;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  margin-bottom: -1px;
+}
+
+.tab:hover { color: var(--colour-text); }
+
+.tab[aria-selected="true"] {
+  color: var(--colour-accent);
+  border-bottom-color: var(--colour-accent);
+  font-weight: 600;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--colour-accent);
+  outline-offset: -2px;
+}
+
+.tab-panel { min-width: 0; }
+
+@media (max-width: 640px) {
+  .tabs { gap: 0; }
+  .tab { padding: 8px 10px; font-size: 13px; }
+}
+
+/* ------------------------------------------------------------ status bar -- */
+
+.status-bar {
+  grid-row: 2;
+  /* Both columns: the bar runs the full width, under the sidebar too. */
+  grid-column: 1 / -1;
+  position: sticky;
+  bottom: 0;
+
+  display: flex;
+  align-items: center;
+  min-height: var(--status-bar-height);
+  padding: 0 var(--gap);
+  min-width: 0;
+
+  background: var(--colour-surface);
+  border-top: 1px solid var(--colour-border);
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  font-family: var(--font-mono);
+}
+
+/* The readings themselves. A box of its own inside the bar, with no padding:
+ * the dividers are drawn to the left of each item, outside its own box, and
+ * this is what clips the one belonging to the first item of a wrapped line.
+ * Put them straight in the bar and that divider would land on the bar's
+ * padding, which `overflow` does not clip, and every second line would open
+ * with a stray vertical bar. */
+.status-strip {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px var(--status-divider-gap);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.status-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* One vertical bar between one reading and the next. Written by the
+ * stylesheet and not by the template, so a screen reader reads the readings
+ * and not a row of pipes, and placed at the middle of the gap rather than
+ * inserted into the flow, so it takes no part in the wrapping it would
+ * otherwise disturb. */
+.status-item + .status-item::before {
+  content: "|";
+  position: absolute;
+  left: calc(var(--status-divider-gap) / -2);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--colour-status-divider);
+  pointer-events: none;
+}
+
+/* Pushes whatever follows to the right edge of the bar. */
+.status-spacer { flex: 1 1 auto; min-width: 0; }
+
+.status-value { color: var(--colour-text); }
+
+.status-item[data-state="bad"] .status-value { color: var(--colour-danger); }
+.status-item[data-state="good"] .status-value { color: var(--colour-ok); }
+
+/* The link to the project repository, at the right end of the bar. It takes
+ * the colour of the text around it instead of the link colour, so it reads as
+ * part of the strip and not as a call to action. */
+.status-repo {
+  text-decoration: none;
+  color: var(--colour-text-dim);
+  gap: 5px;
+}
+
+.status-repo:hover,
+.status-repo:focus-visible {
+  color: var(--colour-text);
+  text-decoration: underline;
+}
+
+/* currentColor, so the mark follows the theme: dark on a light bar, light on
+ * a dark one, with no second copy of the file to keep in step. */
+.status-repo-logo {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.status-repo-name { overflow-wrap: anywhere; }
+
+/* ------------------------------------------------------------------ misc -- */
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--colour-border);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--colour-text-dim);
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+/* The line saying that the start of a conversation was cut off.
+ *
+ * Quieter than a message and not styled like one: it is not something anybody
+ * said. Centred and small, so it reads as a note about the log rather than as
+ * the first thing in it. */
+.chat-trimmed {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--colour-text-dim);
+  border-bottom: 1px solid var(--colour-border);
+  overflow-wrap: anywhere;
+}
+
+.empty {
+  color: var(--colour-text-dim);
+  font-size: 13px;
+  padding: 10px 0;
+}
+
+.notice {
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--colour-border);
+  margin-bottom: var(--gap);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.notice-error { border-color: var(--colour-danger); color: var(--colour-danger); }
+.notice-ok { border-color: var(--colour-ok); color: var(--colour-ok); }
+.notice-warn { border-color: var(--colour-warn); color: var(--colour-warn); }
+
+/* Pop-up messages ----------------------------------------------------------
+ *
+ * The layer covers the content column and nothing else: the message belongs
+ * to the panel the user is looking at, and a message drawn over the sidebar
+ * would look like it belonged to the agent list.
+ *
+ * It is `fixed` and not `absolute` on purpose. The content column is as tall
+ * as its content, so centring inside it would put the message in the middle
+ * of the document rather than in the middle of what is on screen - which is
+ * exactly the bug this replaces, only lower down.
+ *
+ * The layer itself takes no clicks, so nothing behind it stops working while
+ * a message is up. Only the message does, because it can be dismissed.
+ */
+.notice-layer {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-width);
+  right: 0;
+  bottom: var(--status-bar-height);
+  display: grid;
+  place-items: center;
+  padding: var(--gap);
+  pointer-events: none;
+  z-index: 60;
+  min-width: 0;
+}
+
+.notice-layer:empty { display: none; }
+
+.notice-toast {
+  pointer-events: auto;
+  display: flex;
+  /* The cross sits on the middle of the message, not on its first line. */
+  align-items: center;
+  gap: 12px;
+  max-width: min(520px, 100%);
+  margin: 0;
+  padding: 14px 16px;
+  font-size: 15px;
+  background: var(--colour-surface);
+  border: 2px solid var(--colour-border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  animation: vNoticeAppear 140ms ease-out;
+}
+
+/* Said again with both classes, because the border shorthand above would
+ * otherwise put --colour-border back over the state colour. Green or red is
+ * the fastest thing to read on a box in the middle of the screen. */
+.notice-toast.notice-ok { border-color: var(--colour-ok); }
+.notice-toast.notice-error { border-color: var(--colour-danger); }
+/* Amber: nothing went wrong and nothing happened either, which is neither
+ * of the other two. */
+.notice-toast.notice-warn { border-color: var(--colour-warn); }
+
+.notice-toast .notice-text { min-width: 0; overflow-wrap: anywhere; }
+
+/* A plain close button rather than a border-less glyph: an error stays until
+ * it is read, so there has to be something obvious to press. */
+/* A square button with the cross centred in it by the grid, and the cross
+ * itself centred by its own geometry. Both are needed: centring the box does
+ * nothing for a glyph that is off-centre inside that box. */
+.notice-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+}
+
+.notice-close-cross {
+  display: block;
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.notice-close:focus-visible {
+  outline: 2px solid var(--colour-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@keyframes vNoticeAppear {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Leaving is a fade the code waits for, so the message does not blink out of
+ * existence at the exact moment the timer runs down. */
+.notice-toast[data-leaving="1"] {
+  opacity: 0;
+  transition: opacity 180ms ease-in;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notice-toast { animation: none; }
+  .notice-toast[data-leaving="1"] { transition: none; }
+}
+
+.status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 12px;
+  color: var(--colour-text-dim);
+  min-width: 0;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--colour-danger);
+  margin-right: 5px;
+}
+
+.status-dot[data-up="true"] { background: var(--colour-ok); }
+
+/* Tables and code scroll inside their own box, never dragging the document. */
+.table-wrap { overflow-x: auto; max-width: 100%; }
+
+table { border-collapse: collapse; width: 100%; }
+
+th, td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--colour-border);
+  vertical-align: top;
+}
+
+/* Column headings are small caps; the label column of a key/value table is
+ * not. "SISTEMA OPERATIVO" as a row label reads like shouting. */
+thead th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--colour-text-dim);
+  font-weight: 600;
+}
+
+tbody th {
+  color: var(--colour-text-dim);
+  font-weight: 500;
+  white-space: nowrap;
+  padding-right: 20px;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+/* A coloured JSON block ------------------------------------------------------
+ *
+ * The class is added by the highlighter, not written into the template, so a
+ * block only takes these colours once it has actually been parsed: with
+ * JavaScript off the JSON stays plain and readable rather than dimmed with
+ * nothing standing out.
+ *
+ * The structure - braces, brackets, commas, the indentation - is what the
+ * dimmed base colour is for. It is scaffolding, and reading the block means
+ * reading the names and the values, which are the things that get a colour.
+ */
+.json-code {
+  color: var(--colour-text-dim);
+}
+
+.json-code .json-key { color: var(--colour-json-key); font-weight: 550; }
+.json-code .json-string { color: var(--colour-json-string); }
+.json-code .json-number { color: var(--colour-json-number); }
+.json-code .json-literal { color: var(--colour-json-literal); }
+
+pre {
+  background: var(--colour-page);
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  padding: 11px 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+/* ------------------------------------------------------------------ login -- */
+
+.login-page {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: var(--gap);
+}
+
+.login-box {
+  width: 100%;
+  max-width: 380px;
+  min-width: 0;
+}
+
+/* One card: the name is the card's header rather than a separate block
+ * floating above it. */
+.login-panel {
+  padding: 0;
+  overflow: hidden;
+}
+
+.login-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px var(--gap);
+  background: var(--colour-surface-raised);
+  border-bottom: 1px solid var(--colour-border);
+  min-width: 0;
+}
+
+/* Larger here than in the sidebar: the login page is one card on an empty
+ * screen, and this is the only thing on it that says what you are logging
+ * into. */
+.login-header .brand-logo { width: 30px; height: 30px; }
+
+.login-header .brand-name { font-size: 17px; }
+
+.login-body { padding: var(--gap); }
+
+/* The button is centred in the form rather than stretched across it. */
+.login-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.login-actions .button { min-width: 160px; }
+
+/* Room between the button and the note under it: without it the two read as
+ * one block and the note looks like part of the button's label.
+ *
+ * Centred, both lines of it: the card centres its logo, its button and its
+ * language control, and a note ranged left under all of that reads as
+ * something that belongs to another page. */
+.login-hint {
+  margin-top: 18px;
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+/* The path to the installation log, on a line of its own under that note.
+ *
+ * Its own line because a path wrapped into the middle of a sentence is read
+ * as two halves and typed back wrong; at 25 characters it fits on one line
+ * even at 320px, and `anywhere` is there so that a narrower box or a larger
+ * font breaks it instead of pushing the page sideways. */
+.login-hint-path {
+  /* Centred like the sentence above it, which is what makes the two read as
+   * one note rather than two. */
+  margin: 0;
+  text-align: center;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.login-hint-path code {
+  /* Same family and size as the sentence above it: what marks it out as a
+   * path is the colour and the line of its own, not a second typeface. The
+   * element stays <code> because that is what it is. */
+  font: inherit;
+  color: var(--colour-path);
+  background: none;
+  padding: 0;
+}
+
+.login-footer {
+  display: flex;
+  justify-content: center;
+  padding: 12px var(--gap);
+  border-top: 1px solid var(--colour-border);
+  background: var(--colour-surface-raised);
+  min-width: 0;
+}
+
+.login-language {
+  padding: 6px 10px;
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  background: var(--colour-page);
+  color: var(--colour-text-dim);
+  font: inherit;
+  font-size: 13px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.login-language:hover { color: var(--colour-text); }
+
+/* ------------------------------------------------------------------- api -- */
+
+.endpoint {
+  border: 1px solid var(--colour-border);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.endpoint-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--colour-surface-raised);
+  min-width: 0;
+}
+
+.endpoint-method {
+  flex: none;
+  padding: 2px 9px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--colour-accent-text);
+  background: var(--colour-accent);
+  text-transform: uppercase;
+}
+
+.endpoint-method[data-method="get"] { background: var(--colour-ok); }
+.endpoint-method[data-method="post"] { background: var(--colour-accent); }
+.endpoint-method[data-method="put"] { background: var(--colour-warn); }
+.endpoint-method[data-method="delete"] { background: var(--colour-danger); }
+
+.endpoint-path {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.endpoint-body { padding: 11px 12px; min-width: 0; }
+
+/* ---------------------------------------------------------------- mobile -- */
+
+@media (max-width: 820px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+
+  .sidebar {
+    grid-column: 1 / -1;
+    position: static;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--colour-border);
+  }
+
+  .main { grid-row: 2; grid-column: 1 / -1; }
+  .status-bar { grid-row: 3; }
+
+  /* One column, so there is no sidebar to keep clear of. */
+  .notice-layer { left: 0; }
+
+  .agent-list {
+    max-height: 42vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 820px) {
+  /* The sidebar is stacked above the content on a phone, so the chat cannot
+   * claim the whole viewport height. */
+  .chat { height: auto; min-height: 0; }
+  .chat-log { max-height: 55vh; }
+}
+
+@media (max-width: 640px) {
+  :root { --gap: 12px; }
+
+  .chat-message { max-width: 100%; }
+  .chat-composer { flex-wrap: wrap; }
+  .chat-send-lane { width: 100%; }
+  .chat-send-lane .button { width: 100%; }
+
+  body { font-size: 14px; }
+
+  .main { padding: var(--gap); }
+
+  /* 13px monospace fits about 35 characters on a 360px screen, so code gets
+   * smaller rather than wider. */
+  pre, code { font-size: 12px; }
+  pre { padding: 9px 10px; }
+
+  .page-title { font-size: 18px; }
+  .field-row { grid-template-columns: minmax(0, 1fr); }
+}
+.chat-audio {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0.5rem 0;
+}
+
+.chat-audio-heading {
+  color: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+#vAudioProgress {
+  display: block;
+  width: 100%;
+  margin: 0.75rem 0;
+}
+
+#vAudioProgress[hidden] { display: none; }

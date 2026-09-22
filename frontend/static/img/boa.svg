@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img"
+     aria-label="Bunch of AIgents">
+  <title>Bunch of AIgents</title>
+  <!--
+    A shield with three robots cut out of it: a bunch of agents, watching.
+
+    The shield is a solid shape and the robots are HOLES in it, made with a
+    mask rather than drawn in a second colour. That is what makes one file
+    work everywhere: as a favicon on a browser tab of any colour, on the light
+    sidebar and on the dark one, at 16 pixels and at 64. A two-colour logo
+    would need one version per theme and would still be wrong on somebody's
+    tab bar.
+
+    White in the mask is kept, black is cut away. So the heads are black - the
+    holes - and the eyes are white, which puts them back as solid dots inside
+    each hole. Three robots and not one: the whole point of the project is
+    that there are several of them.
+  -->
+  <mask id="vBoaMask">
+    <!-- The shield: flat shoulders, sides that fall away to a point. -->
+    <path d="M32 3 L58 12 V30 C58 45.5 47 55.5 32 61 C17 55.5 6 45.5 6 30 V12 Z"
+          fill="#ffffff"/>
+
+    <!-- The two smaller agents, one either side and a little lower. -->
+    <g fill="#000000">
+      <rect x="12" y="33" width="11" height="10.5" rx="2.5"/>
+      <rect x="16.6" y="28.5" width="1.8" height="4.5" rx="0.9"/>
+      <circle cx="17.5" cy="27.6" r="2"/>
+
+      <rect x="41" y="33" width="11" height="10.5" rx="2.5"/>
+      <rect x="45.6" y="28.5" width="1.8" height="4.5" rx="0.9"/>
+      <circle cx="46.5" cy="27.6" r="2"/>
+    </g>
+    <g fill="#ffffff">
+      <circle cx="15.4" cy="38.3" r="1.6"/>
+      <circle cx="19.6" cy="38.3" r="1.6"/>
+      <circle cx="44.4" cy="38.3" r="1.6"/>
+      <circle cx="48.6" cy="38.3" r="1.6"/>
+    </g>
+
+    <!-- The one in front, larger, so the eye lands on it first. -->
+    <rect x="22" y="26" width="20" height="18" rx="4" fill="#000000"/>
+    <rect x="30.9" y="19" width="2.2" height="7" rx="1.1" fill="#000000"/>
+    <circle cx="32" cy="18" r="2.6" fill="#000000"/>
+    <g fill="#ffffff">
+      <circle cx="27.4" cy="34" r="2.4"/>
+      <circle cx="36.6" cy="34" r="2.4"/>
+    </g>
+  </mask>
+
+  <rect width="64" height="64" fill="#3b6ef0" mask="url(#vBoaMask)"/>
+</svg>

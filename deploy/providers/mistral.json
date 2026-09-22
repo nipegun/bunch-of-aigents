@@ -1,0 +1,17 @@
+{
+  "provider": "mistral",
+  "documentation": "https://docs.mistral.ai/models/",
+  "models": [
+    {
+      "id": "mistral-small-latest"
+    },
+    {
+      "id": "mistral-medium-3-5"
+    },
+    {
+      "id": "labs-leanstral-1-5",
+      "context": "256K",
+      "note": "$0 in / $0 out per Mtok"
+    }
+  ]
+}

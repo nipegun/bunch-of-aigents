@@ -1,0 +1,21 @@
+{
+  "provider": "kimi",
+  "documentation": "https://platform.kimi.ai/docs/models",
+  "models": [
+    {
+      "id": "kimi-k3",
+      "context": "1M",
+      "note": "$3 in / $15 out per Mtok"
+    },
+    {
+      "id": "kimi-k2.6",
+      "context": "256K",
+      "note": "$0.95 in / $4 out per Mtok"
+    },
+    {
+      "id": "kimi-k2.5",
+      "context": "256K",
+      "note": "$0.45 in / $2.25 out per Mtok"
+    }
+  ]
+}
