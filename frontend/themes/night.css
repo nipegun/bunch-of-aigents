@@ -1,0 +1,36 @@
+/*
+name: Night
+scheme: dark
+description: The dark palette. The default for a dark room.
+*/
+
+:root {
+  color-scheme: dark;
+
+  --colour-page: #16181d;
+  --colour-surface: #1e2127;
+  --colour-surface-raised: #252932;
+  --colour-border: #343945;
+  --colour-status-divider: #5b6271;
+  --colour-text: #e6e8ec;
+  --colour-text-dim: #9aa0ab;
+  --colour-accent: #5b87f5;
+  --colour-accent-text: #0f1115;
+  --colour-danger: #e1604f;
+  --colour-ok: #4cb782;
+  --colour-warn: #d9a441;
+  --colour-state-on: #4cb782;
+  --colour-state-off: #e1604f;
+  --colour-todo: #8b909b;
+  --colour-doing: #5b87f5;
+  --colour-done: #4cb782;
+
+  /* JSON syntax colouring, on the API documentation page. Theme variables and
+   * not fixed colours, so a theme sets its own and the contrast test holds
+   * them to the same bar as every other colour that paints text. */
+  --colour-path: #79b2f5;
+  --colour-json-key: #79b2f5;
+  --colour-json-string: #63c58c;
+  --colour-json-number: #e0a25e;
+  --colour-json-literal: #c295ef;
+}

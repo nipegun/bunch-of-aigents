@@ -1,0 +1,46 @@
+#!/sbin/openrc-run
+
+# Bunch of AIgents - privileged executor daemon.
+#
+# This one really is root: it creates the Linux user of each agent, writes
+# their crontabs and starts their runs. Its surface is a closed vocabulary of
+# verbs over a Unix socket, not a remote shell.
+#
+# supervise-daemon is what gives this the `Restart=on-failure` of the systemd
+# unit it mirrors: OpenRC's plain start-stop-daemon starts a process and
+# forgets about it.
+
+name="boa-exec"
+description="Bunch of AIgents - Privileged executor daemon"
+
+command="/opt/boa/venv/bin/python3"
+command_args="-m backend.core.exec_daemon"
+directory="/opt/boa/webapp"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+
+# Where what it prints goes. supervise-daemon sends the process's stdout and
+# stderr to /dev/null unless told otherwise, and on Alpine nothing else
+# collects them: measured on the Alpine test machine, all six services had
+# stderr on /dev/null and not one line of theirs anywhere. The file is
+# created as boa in start_pre, so that logrotate rotates it as boa whoever
+# writes to it - the executor's is written by root.
+output_log="/opt/boa/logs/${RC_SVCNAME}.log"
+error_log="/opt/boa/logs/${RC_SVCNAME}.log"
+
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+export PYTHONPATH=/opt/boa/webapp
+export BOA_BASE_DIR=/opt/boa
+
+depend() {
+  need net
+}
+
+start_pre() {
+  checkpath --file --mode 0640 --owner boa:boa "/opt/boa/logs/${RC_SVCNAME}.log"
+  # systemd's RuntimeDirectory=boa, by hand. root owns it, which is what keeps
+  # the socket out of reach of every agent.
+  checkpath --directory --mode 0755 --owner root:root /run/boa
+}

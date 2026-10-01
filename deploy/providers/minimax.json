@@ -1,0 +1,31 @@
+{
+  "provider": "minimax",
+  "documentation": "https://platform.minimax.io/docs/api-reference/text-anth-api",
+  "note": "Listed by MiniMax's own /v1/models endpoint. No prices here: the provider does not publish them in that list.",
+  "models": [
+    {
+      "id": "MiniMax-M2"
+    },
+    {
+      "id": "MiniMax-M2.1"
+    },
+    {
+      "id": "MiniMax-M2.1-highspeed"
+    },
+    {
+      "id": "MiniMax-M2.5"
+    },
+    {
+      "id": "MiniMax-M2.5-highspeed"
+    },
+    {
+      "id": "MiniMax-M2.7"
+    },
+    {
+      "id": "MiniMax-M2.7-highspeed"
+    },
+    {
+      "id": "MiniMax-M3"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+#!/sbin/openrc-run
+
+# Bunch of AIgents - the application's own TLS proxy.
+#
+# This is the only component listening on a port. It terminates TLS and reads
+# the PROXY header the machine's HAProxy sends, which gunicorn cannot do:
+# those bytes arrive before the handshake.
+#
+# In "direct" mode it binds 80 and 443 as the unprivileged `boa` user. The
+# systemd unit grants that with AmbientCapabilities=CAP_NET_BIND_SERVICE;
+# OpenRC has no equivalent, so the installer puts the capability on the
+# haproxy binary itself with setcap. It allows binding a low port and nothing
+# else.
+
+name="boa-proxy"
+description="Bunch of AIgents - TLS proxy"
+
+# -db keeps haproxy in the foreground, which is what a supervisor wants.
+command="/usr/sbin/haproxy"
+command_args="-f /opt/boa/config/haproxy.cfg -db"
+command_user="boa:boa"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+
+# Where what it prints goes. supervise-daemon sends the process's stdout and
+# stderr to /dev/null unless told otherwise, and on Alpine nothing else
+# collects them: measured on the Alpine test machine, all six services had
+# stderr on /dev/null and not one line of theirs anywhere. The file is
+# created as boa in start_pre, so that logrotate rotates it as boa whoever
+# writes to it - the executor's is written by root.
+output_log="/opt/boa/logs/${RC_SVCNAME}.log"
+error_log="/opt/boa/logs/${RC_SVCNAME}.log"
+
+depend() {
+  need net boa-web
+}
+
+start_pre() {
+  checkpath --file --mode 0640 --owner boa:boa "/opt/boa/logs/${RC_SVCNAME}.log"
+}

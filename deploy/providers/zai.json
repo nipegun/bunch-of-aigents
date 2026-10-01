@@ -1,0 +1,39 @@
+{
+  "provider": "zai",
+  "documentation": "https://docs.z.ai/guides/overview/overview",
+  "models": [
+    {
+      "id": "glm-4.5"
+    },
+    {
+      "id": "glm-4.5-air"
+    },
+    {
+      "id": "glm-4.6"
+    },
+    {
+      "id": "glm-4.7"
+    },
+    {
+      "id": "glm-5"
+    },
+    {
+      "id": "glm-5-turbo"
+    },
+    {
+      "id": "glm-5.1"
+    },
+    {
+      "id": "glm-5.2",
+      "context": "1M"
+    },
+    {
+      "id": "glm-5.3",
+      "context": "1M"
+    },
+    {
+      "id": "glm-5.3-flash",
+      "context": "1M"
+    }
+  ]
+}

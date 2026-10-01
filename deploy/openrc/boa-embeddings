@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+
+name="boa-embeddings"
+description="Bunch of AIgents - Local document embeddings"
+command="/opt/boa/venv/bin/python3"
+command_args="-m backend.core.rag_runtime --serve"
+command_user="boa:boa"
+directory="/opt/boa/webapp"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+output_log="/opt/boa/logs/${RC_SVCNAME}.log"
+error_log="/opt/boa/logs/${RC_SVCNAME}.log"
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+export PYTHONPATH=/opt/boa/webapp
+export BOA_BASE_DIR=/opt/boa
+
+depend() {
+  need localmount
+}
+
+start_pre() {
+  checkpath --directory --mode 0755 --owner boa:boa /run/boa-embeddings
+  checkpath --file --mode 0640 --owner boa:boa "/opt/boa/logs/${RC_SVCNAME}.log"
+}

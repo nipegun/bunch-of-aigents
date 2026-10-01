@@ -1,0 +1,28 @@
+[Unit]
+Description=Bunch of AIgents - Privileged executor daemon
+Documentation=https://github.com/nipegun/bunch-of-aigents
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/boa/webapp
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=BOA_BASE_DIR=/opt/boa
+RuntimeDirectory=boa
+RuntimeDirectoryMode=0755
+ExecStart=/opt/boa/venv/bin/python3 -m backend.core.exec_daemon
+Restart=on-failure
+RestartSec=5
+
+# This service really is root, because it creates users and installs
+# crontabs. Its surface is a closed vocabulary of verbs, not a remote shell.
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+
+[Install]
+WantedBy=multi-user.target

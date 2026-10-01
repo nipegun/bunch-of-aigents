@@ -1,0 +1,30 @@
+{
+  "provider": "cloudflare",
+  "documentation": "https://developers.cloudflare.com/workers-ai/models/",
+  "models": [
+    {
+      "id": "@cf/openai/gpt-oss-20b",
+      "label": "gpt-oss-20b"
+    },
+    {
+      "id": "@cf/openai/gpt-oss-120b",
+      "label": "gpt-oss-120b"
+    },
+    {
+      "id": "@cf/qwen/qwen3.8-27b",
+      "label": "qwen3.8-27b"
+    },
+    {
+      "id": "@cf/zai-org/glm-5.3-flash",
+      "label": "glm-5.3-flash"
+    },
+    {
+      "id": "@cf/zai-org/glm-5.2",
+      "label": "glm-5.2"
+    },
+    {
+      "id": "@cf/zai-org/glm-4.7-flash",
+      "label": "glm-4.7-flash"
+    }
+  ]
+}

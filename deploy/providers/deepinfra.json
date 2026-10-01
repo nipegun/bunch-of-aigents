@@ -1,0 +1,247 @@
+{
+  "provider": "deepinfra",
+  "documentation": "https://deepinfra.com/models",
+  "models": [
+    {
+      "id": "anthropic/claude-fable-5",
+      "label": "claude-fable-5",
+      "context": "1M"
+    },
+    {
+      "id": "anthropic/claude-opus-5",
+      "label": "claude-opus-5",
+      "context": "1M"
+    },
+    {
+      "id": "anthropic/claude-sonnet-5",
+      "label": "claude-sonnet-5",
+      "context": "1M"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V3.1",
+      "label": "DeepSeek-V3.1",
+      "context": "160K"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Flash",
+      "label": "DeepSeek-V4-Flash",
+      "context": "1M"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Flash-0731",
+      "label": "DeepSeek-V4-Flash-0731",
+      "context": "1M"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Pro",
+      "label": "DeepSeek-V4-Pro"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Pro-0813",
+      "label": "DeepSeek-V4-Pro-0813"
+    },
+    {
+      "id": "google/gemini-2.5-flash",
+      "label": "gemini-2.5-flash",
+      "context": "1M"
+    },
+    {
+      "id": "google/gemini-3.1-flash-lite",
+      "label": "gemini-3.1-flash-lite",
+      "context": "1M"
+    },
+    {
+      "id": "google/gemini-3.5-flash",
+      "label": "gemini-3.5-flash",
+      "context": "1M"
+    },
+    {
+      "id": "google/gemini-3.7-flash",
+      "label": "gemini-3.7-flash",
+      "context": "1M"
+    },
+    {
+      "id": "google/gemma-4-26B-A4B-it",
+      "label": "gemma-4-26B-A4B-it",
+      "context": "256K"
+    },
+    {
+      "id": "google/gemma-4-31B-it",
+      "label": "gemma-4-31B-it",
+      "context": "256K"
+    },
+    {
+      "id": "google/gemma-4-31B-it-turbo",
+      "label": "gemma-4-31B-it-turbo",
+      "context": "256K"
+    },
+    {
+      "id": "google/gemma-4-31B-it-Ultra",
+      "label": "gemma-4-31B-it-Ultra",
+      "context": "128K"
+    },
+    {
+      "id": "google/gemma-4-E4B-it",
+      "label": "gemma-4-E4B-it",
+      "context": "128K"
+    },
+    {
+      "id": "inclusionAI/Ling-3.0-flash",
+      "label": "Ling-3.0-flash",
+      "context": "128K"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.5",
+      "label": "Kimi-K2.5",
+      "context": "256K"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.6",
+      "label": "Kimi-K2.6",
+      "context": "256K"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.7-Code",
+      "label": "Kimi-K2.7-Code",
+      "context": "256K"
+    },
+    {
+      "id": "moonshotai/Kimi-K3",
+      "label": "Kimi-K3",
+      "context": "1M",
+      "note": "$3 in / $15 out per Mtok"
+    },
+    {
+      "id": "nvidia/Nemotron-3-Nano-30B-A3B",
+      "label": "Nemotron-3-Nano-30B-A3B",
+      "context": "256K"
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "label": "gpt-oss-120b",
+      "context": "128K"
+    },
+    {
+      "id": "openai/gpt-oss-120b-Turbo",
+      "label": "gpt-oss-120b-Turbo"
+    },
+    {
+      "id": "openai/gpt-oss-120b-Ultra",
+      "label": "gpt-oss-120b-Ultra"
+    },
+    {
+      "id": "openai/gpt-oss-20b",
+      "label": "gpt-oss-20b",
+      "context": "128K"
+    },
+    {
+      "id": "Qwen/Qwen3-14B",
+      "label": "Qwen3-14B",
+      "context": "40K"
+    },
+    {
+      "id": "Qwen/Qwen3-30B-A3B",
+      "label": "Qwen3-30B-A3B",
+      "context": "40K"
+    },
+    {
+      "id": "Qwen/Qwen3-32B",
+      "label": "Qwen3-32B",
+      "context": "40K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-122B-A10B",
+      "label": "Qwen3.5-122B-A10B",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-27B",
+      "label": "Qwen3.5-27B",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-35B-A3B",
+      "label": "Qwen3.5-35B-A3B",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-397B-A17B",
+      "label": "Qwen3.5-397B-A17B",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.6-27B",
+      "label": "Qwen3.6-27B",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.6-35B-A3B",
+      "label": "Qwen3.6-35B-A3B",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.8-2.4T-A95B",
+      "label": "Qwen3.8-2.4T-A95B",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "label": "Qwen3.8-27B",
+      "context": "256K"
+    },
+    {
+      "id": "stepfun-ai/Step-3.7-Flash",
+      "label": "Step-3.7-Flash"
+    },
+    {
+      "id": "tencent/Hy3",
+      "label": "Hy3",
+      "context": "256K"
+    },
+    {
+      "id": "thinkingmachines/Inkling",
+      "label": "Inkling",
+      "context": "512K"
+    },
+    {
+      "id": "thinkingmachines/Inkling-Small",
+      "label": "Inkling-Small",
+      "context": "512K"
+    },
+    {
+      "id": "XiaomiMiMo/MiMo-V2.5",
+      "label": "MiMo-V2.5",
+      "context": "256K"
+    },
+    {
+      "id": "XiaomiMiMo/MiMo-V2.5-Pro",
+      "label": "MiMo-V2.5-Pro",
+      "context": "1M"
+    },
+    {
+      "id": "zai-org/GLM-4.6",
+      "label": "GLM-4.6",
+      "context": "198K"
+    },
+    {
+      "id": "zai-org/GLM-4.7",
+      "label": "GLM-4.7",
+      "context": "198K"
+    },
+    {
+      "id": "zai-org/GLM-5",
+      "label": "GLM-5",
+      "context": "198K"
+    },
+    {
+      "id": "zai-org/GLM-5.1",
+      "label": "GLM-5.1",
+      "context": "198K"
+    },
+    {
+      "id": "zai-org/GLM-5.2",
+      "label": "GLM-5.2",
+      "context": "1M"
+    }
+  ]
+}

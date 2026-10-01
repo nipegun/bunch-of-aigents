@@ -1,0 +1,19 @@
+{
+  "provider": "vllm",
+  "documentation": "https://docs.vllm.ai/en/latest/models/supported_models.html",
+  "note": "The name must match exactly what vLLM was started with. Check with `curl http://host:8000/v1/models`.",
+  "models": [
+    {
+      "id": "meta-llama/Llama-3.1-8B-Instruct",
+      "label": "Llama 3.1 8B Instruct"
+    },
+    {
+      "id": "Qwen/Qwen2.5-7B-Instruct",
+      "label": "Qwen 2.5 7B Instruct"
+    },
+    {
+      "id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "label": "Mistral 7B Instruct"
+    }
+  ]
+}

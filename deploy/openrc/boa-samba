@@ -1,0 +1,20 @@
+#!/sbin/openrc-run
+
+name="boa-samba"
+description="Bunch of AIgents - Agent Samba shares"
+command="/usr/sbin/smbd"
+command_args="--foreground --no-process-group --debug-stdout --configfile=/opt/boa/samba/smb.conf"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+output_log="/opt/boa/logs/${RC_SVCNAME}.log"
+error_log="/opt/boa/logs/${RC_SVCNAME}.log"
+
+depend() {
+  need net
+}
+
+start_pre() {
+  checkpath --directory --mode 0700 --owner root:root /run/boa-samba
+  checkpath --file --mode 0640 --owner boa:boa "/opt/boa/logs/${RC_SVCNAME}.log"
+}

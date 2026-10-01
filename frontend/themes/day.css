@@ -1,0 +1,44 @@
+/*
+name: Day
+scheme: light
+description: Soft greys with lighter cards. The default for a lit room.
+*/
+
+/* Loaded after app.css, so these win over the palette there - including over
+ * its `prefers-color-scheme: dark` block, which is what makes this one stay
+ * light on a machine set to dark.
+ *
+ * `color-scheme` is set too, so the browser paints its own furniture - form
+ * controls, scrollbars, the canvas behind the page - to match.
+ */
+
+:root {
+  color-scheme: light;
+
+  --colour-page: #e9ebef;
+  --colour-surface: #f7f8fa;
+  --colour-surface-raised: #f1f3f6;
+  --colour-border: #ccd1d9;
+  --colour-status-divider: #a6adb7;
+  --colour-text: #1b1d21;
+  --colour-text-dim: #63676e;
+  --colour-accent: #245cee;
+  --colour-accent-text: #ffffff;
+  --colour-danger: #c0392b;
+  --colour-ok: #27784b;
+  --colour-warn: #8f5f19;
+  --colour-state-on: #237846;
+  --colour-state-off: #c0392b;
+  --colour-todo: #636a76;
+  --colour-doing: #245cee;
+  --colour-done: #27784b;
+
+  /* JSON syntax colouring, on the API documentation page. Theme variables and
+   * not fixed colours, so a theme sets its own and the contrast test holds
+   * them to the same bar as every other colour that paints text. */
+  --colour-path: #1f4fb6;
+  --colour-json-key: #1f4fb6;
+  --colour-json-string: #1f6b3b;
+  --colour-json-number: #8a4a06;
+  --colour-json-literal: #77359e;
+}

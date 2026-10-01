@@ -1,0 +1,11 @@
+{
+  "provider": "llamacpp",
+  "documentation": "https://github.com/ggml-org/llama.cpp",
+  "note": "llama-server usually serves a single model, so the name here is a label rather than a selector.",
+  "models": [
+    {
+      "id": "local-model",
+      "label": "Whatever llama-server is serving"
+    }
+  ]
+}

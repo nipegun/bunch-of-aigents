@@ -1,0 +1,86 @@
+{
+  "provider": "openai",
+  "documentation": "https://platform.openai.com/docs/models",
+  "models": [
+    {
+      "id": "gpt-5",
+      "context": "400K",
+      "note": "$1.25 in / $10 out per Mtok"
+    },
+    {
+      "id": "gpt-5-mini",
+      "context": "400K",
+      "note": "$0.25 in / $2 out per Mtok"
+    },
+    {
+      "id": "gpt-5-nano",
+      "context": "400K",
+      "note": "$0.05 in / $0.4 out per Mtok"
+    },
+    {
+      "id": "gpt-5.1",
+      "context": "400K",
+      "note": "$1.25 in / $10 out per Mtok"
+    },
+    {
+      "id": "gpt-5.2",
+      "context": "400K",
+      "note": "$1.75 in / $14 out per Mtok"
+    },
+    {
+      "id": "gpt-5.2-pro",
+      "context": "400K",
+      "note": "$21 in / $168 out per Mtok"
+    },
+    {
+      "id": "gpt-5.3-codex",
+      "context": "400K",
+      "note": "$1.75 in / $14 out per Mtok"
+    },
+    {
+      "id": "gpt-5.4",
+      "context": "1.05M",
+      "note": "$2.5 in / $15 out per Mtok"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "context": "400K",
+      "note": "$0.75 in / $4.5 out per Mtok"
+    },
+    {
+      "id": "gpt-5.4-nano",
+      "context": "400K",
+      "note": "$0.2 in / $1.25 out per Mtok"
+    },
+    {
+      "id": "gpt-5.4-pro",
+      "context": "1.05M",
+      "note": "$30 in / $180 out per Mtok"
+    },
+    {
+      "id": "gpt-5.5",
+      "context": "1.05M",
+      "note": "$5 in / $30 out per Mtok"
+    },
+    {
+      "id": "gpt-5.5-pro",
+      "context": "1.05M",
+      "note": "$30 in / $180 out per Mtok"
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "context": "1.05M",
+      "note": "$2 in / $10 out per Mtok"
+    },
+    {
+      "id": "gpt-5.6-terra",
+      "context": "1.05M",
+      "note": "$2 in / $12 out per Mtok"
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "context": "1.05M",
+      "note": "$0.2 in / $1.2 out per Mtok"
+    }
+  ]
+}

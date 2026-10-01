@@ -1,0 +1,33 @@
+[Unit]
+Description=Bunch of AIgents - Card buzzer
+Documentation=https://github.com/nipegun/bunch-of-aigents
+After=network.target boa-exec.service
+# It can do nothing without the executor: starting a run as an agent's own user
+# is the executor's job, and this service has no privileges of its own.
+Requires=boa-exec.service
+PartOf=boa-web.service
+
+[Service]
+Type=simple
+User=boa
+Group=boa
+WorkingDirectory=/opt/boa/webapp
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=BOA_BASE_DIR=/opt/boa
+ExecStart=/opt/boa/venv/bin/python3 -m backend.core.buzzer
+Restart=on-failure
+RestartSec=5
+
+# It reads the board and talks to a socket. Nothing else.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictSUIDSGID=yes
+ReadWritePaths=/opt/boa/kanban /opt/boa/logs
+
+[Install]
+WantedBy=multi-user.target
