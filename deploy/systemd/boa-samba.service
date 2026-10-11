@@ -1,0 +1,21 @@
+[Unit]
+Description=Bunch of AIgents - Agent Samba shares
+Documentation=https://github.com/nipegun/bunch-of-aigents
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+RuntimeDirectory=boa-samba
+RuntimeDirectoryMode=0700
+ExecStart=/usr/sbin/smbd --foreground --no-process-group --debug-stdout --configfile=/opt/boa/samba/smb.conf
+Restart=on-failure
+RestartSec=5
+PrivateTmp=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+
+[Install]
+WantedBy=multi-user.target

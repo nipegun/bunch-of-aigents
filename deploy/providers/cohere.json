@@ -1,0 +1,14 @@
+{
+  "provider": "cohere",
+  "documentation": "https://docs.cohere.com/docs/models",
+  "models": [
+    {
+      "id": "command-a-reasoning-08-2025",
+      "context": "250K"
+    },
+    {
+      "id": "command-a-plus-05-2026",
+      "context": "125K"
+    }
+  ]
+}

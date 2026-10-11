@@ -1,0 +1,44 @@
+{
+  "llama_version": "v0.5.0",
+  "default": "embeddinggemma-300m-q8",
+  "models": [
+    {
+      "id": "embeddinggemma-300m-q8",
+      "name": "EmbeddingGemma 300M (Q8)",
+      "file": "embeddinggemma-300M-Q8_0.gguf",
+      "url": "https://huggingface.co/ggml-org/embeddinggemma-300M-GGUF/resolve/0f741b5a6585bd53aeb15cd1372c56f2a0f65e12/embeddinggemma-300M-Q8_0.gguf",
+      "size": 333590944,
+      "sha256": "b5ce9d77a3fc4b3b39ccb5643c36777911cc4eb46a66962eadfa3f5f60490d63",
+      "dimensions": 768,
+      "context": 2048,
+      "pooling": "mean",
+      "query_prefix": "task: search result | query: ",
+      "document_prefix": "title: none | text: ",
+      "min_support": 0.36,
+      "min_similarity": 0.2,
+      "parameters": "300M",
+      "license": "Gemma Terms of Use",
+      "memory_mb": 600,
+      "relative_indexing_time": 1
+    },
+    {
+      "id": "qwen3-embedding-0.6b-q8",
+      "name": "Qwen3-Embedding 0.6B (Q8)",
+      "file": "Qwen3-Embedding-0.6B-Q8_0.gguf",
+      "url": "https://huggingface.co/Qwen/Qwen3-Embedding-0.6B-GGUF/resolve/370f27d7550e0def9b39c1f16d3fbaa13aa67728/Qwen3-Embedding-0.6B-Q8_0.gguf",
+      "size": 639150592,
+      "sha256": "06507c7b42688469c4e7298b0a1e16deff06caf291cf0a5b278c308249c3e439",
+      "dimensions": 1024,
+      "context": 2048,
+      "pooling": "last",
+      "query_prefix": "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery:",
+      "document_prefix": "",
+      "min_support": 0.44,
+      "min_similarity": 0.35,
+      "parameters": "600M",
+      "license": "Apache 2.0",
+      "memory_mb": 1100,
+      "relative_indexing_time": 4
+    }
+  ]
+}

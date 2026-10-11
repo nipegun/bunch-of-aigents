@@ -1,0 +1,145 @@
+/*
+name: Day High Contrast
+scheme: light
+description: White ground, near-black text and hard borders. For a bright room.
+*/
+
+/* Modelled on GitHub's light high-contrast theme: a white canvas, ink-dark
+ * text, and colours pushed until each one clears 7:1 - WCAG AAA - rather than
+ * the 4.5:1 the everyday themes aim for.
+ *
+ * What it borrows from that theme is the approach as much as the palette:
+ * panels are not told apart by tinting their background, which is what makes a
+ * pale interface mushy, but by a border dark enough to be a line rather than a
+ * suggestion.
+ */
+
+:root {
+  color-scheme: light;
+
+  --colour-page: #ffffff;
+  --colour-surface: #ffffff;
+  --colour-surface-raised: #e7ecf0;
+  --colour-border: #20252c;
+  --colour-status-divider: #20252c;
+  --colour-text: #0e1116;
+  --colour-text-dim: #4b535d;
+  --colour-accent: #0349b4;
+  --colour-accent-text: #ffffff;
+  --colour-danger: #a0111f;
+  --colour-ok: #055d20;
+  --colour-warn: #744500;
+  --colour-state-on: #055d20;
+  --colour-state-off: #a0111f;
+  --colour-todo: #4b535d;
+  --colour-doing: #0349b4;
+  --colour-done: #055d20;
+
+  /* JSON syntax colouring, on the API documentation page. Theme variables and
+   * not fixed colours, so a theme sets its own and the contrast test holds
+   * them to the same bar as every other colour that paints text. */
+  --colour-path: #023a8f;
+  --colour-json-key: #023a8f;
+  --colour-json-string: #04501c;
+  --colour-json-number: #6b3d00;
+  --colour-json-literal: #5c1e94;
+}
+
+/* A one-pixel hairline is the first thing to vanish for the eyes this is for. */
+.panel,
+.app-dialog,
+.chat-message,
+input,
+select,
+textarea,
+.button {
+  border-width: 2px;
+}
+
+/* Focus has to be unmissable, not a hint. */
+:focus-visible {
+  outline: 3px solid var(--colour-accent);
+  outline-offset: 2px;
+}
+
+/* Panels are outlines here, not tints -------------------------------------
+ *
+ * The same rule as its opposite number, Night High Contrast: one surface is
+ * told from another by a border hard enough to be a line, never by a wash of
+ * colour over the background. An agent's box in the sidebar says so too - it
+ * is drawn the way an answer in the chat is drawn, as an outline on the page,
+ * and the selected one differs by the colour of that outline rather than by
+ * being filled in.
+ *
+ * Filling the selected box with the accent was the everyday palette's answer
+ * and it does not belong here: a solid block of blue on a white canvas is the
+ * loudest thing on screen, sitting on whichever agent happens to be open. */
+.agent-item {
+  border: 2px solid var(--colour-border);
+}
+
+.agent-item[data-selected="true"] {
+  background: transparent;
+  border-color: var(--colour-accent);
+}
+
+/* The fill is gone, so the text written for it has to go back to the ordinary
+ * colours. Left as it was, `accent-text` is white on white and the selected
+ * agent becomes the one you cannot read. */
+.agent-item[data-selected="true"] .agent-button,
+.agent-button[aria-current="true"] {
+  color: var(--colour-text);
+}
+
+.agent-item[data-selected="true"] .agent-meta {
+  color: var(--colour-text-dim);
+  opacity: 1;
+}
+
+.agent-item[data-selected="true"] .agent-settings-button {
+  color: var(--colour-text-dim);
+  opacity: 0.8;
+}
+
+.agent-item[data-selected="true"] .agent-settings-button:hover {
+  background: var(--colour-surface-raised);
+  color: var(--colour-text);
+  opacity: 1;
+}
+
+.agent-item[data-selected="true"] .agent-settings-button[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--colour-accent),
+              0 0 8px -2px var(--colour-accent);
+}
+
+/* What the user said, in ink rather than in colour -------------------------
+ *
+ * The mirror of what Night High Contrast does, and for the same reason: the
+ * user's own message is told from the agent's by inverting it, not by filling
+ * it with the accent, which on a white canvas would be the loudest thing on
+ * screen for the one part of the conversation whose contents the user already
+ * knows.
+ *
+ * So it keeps the same outline as an answer and is filled with a softened ink
+ * instead - dark enough to read as the other side of the conversation at a
+ * glance, short of the flat black that turns a bubble into a hole in a bright
+ * room. The text on it is the page colour, as in the night theme: the same
+ * rule, and 11:1 here. */
+:root {
+  --colour-said: #333a44;
+}
+
+.chat-message[data-role="user"] {
+  background: var(--colour-said);
+  border-color: var(--colour-border);
+  color: var(--colour-page);
+}
+
+/* Code inside that bubble is inverted from the rest, so it needs its own
+ * treatment rather than the dark-on-dark it would inherit. */
+.chat-message[data-role="user"] .md code,
+.chat-message[data-role="user"] .md pre.md-code {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: var(--colour-page);
+}

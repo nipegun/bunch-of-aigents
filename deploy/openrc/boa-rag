@@ -1,0 +1,26 @@
+#!/sbin/openrc-run
+
+name="boa-rag"
+description="Bunch of AIgents - Document indexing queue"
+command="/opt/boa/venv/bin/python3"
+command_args="-m backend.core.rag_scheduler"
+command_user="boa:boa"
+directory="/opt/boa/webapp"
+supervisor="supervise-daemon"
+respawn_delay=5
+respawn_max=0
+output_log="/opt/boa/logs/${RC_SVCNAME}.log"
+error_log="/opt/boa/logs/${RC_SVCNAME}.log"
+export PYTHONDONTWRITEBYTECODE=1
+export PYTHONUNBUFFERED=1
+export PYTHONPATH=/opt/boa/webapp
+export BOA_BASE_DIR=/opt/boa
+
+depend() {
+  need boa-exec
+  after boa-embeddings
+}
+
+start_pre() {
+  checkpath --file --mode 0640 --owner boa:boa "/opt/boa/logs/${RC_SVCNAME}.log"
+}

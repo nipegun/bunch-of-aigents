@@ -1,0 +1,58 @@
+<section class="tab-panel" data-agent-panel="rag" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="rag.title">RAG</h2>
+    <p class="panel-hint" data-i18n="rag.hint">Documents are processed and vectorized locally. Retrieved passages are sent to this agent's model when it answers.</p>
+    <div class="checkbox-row">
+      <input id="vRagEnabled" type="checkbox">
+      <label for="vRagEnabled" data-i18n="rag.enabled">Use this library when answering</label>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="vRagMode" data-i18n="rag.mode">Answer mode</label>
+        <select id="vRagMode">
+          <option value="mixed" data-i18n="rag.mixed">Documents and general knowledge</option>
+          <option value="documental" data-i18n="rag.documental">Document evidence required</option>
+          <option value="verified" data-i18n="rag.verified">Documents only (verified)</option>
+        </select>
+        <p class="field-hint" id="vRagModeHint"></p>
+      </div>
+      <div class="field"><label for="vRagFileLimit" data-i18n="rag.fileLimit">Maximum file size (MiB)</label><input id="vRagFileLimit" type="number" min="1" max="1024" value="128"></div>
+      <div class="field"><label for="vRagStorage" data-i18n="rag.storage">Library storage limit (MiB)</label><input id="vRagStorage" type="number" min="1" max="1048576" value="2048"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label for="vRagContext" data-i18n="rag.context">Retrieved text limit (characters)</label><input id="vRagContext" type="number" min="1000" max="64000" value="16000"></div>
+      <div class="field"><label for="vRagResults" data-i18n="rag.results">Passages per search</label><input id="vRagResults" type="number" min="1" max="30" value="8"></div>
+      <div class="field"><label for="vRagLanguages" data-i18n="rag.languages">OCR languages</label><input id="vRagLanguages" type="text" value="eng+spa"></div>
+      <div class="field"><label for="vRagSimilarity" data-i18n="rag.similarity">Minimum similarity</label><input id="vRagSimilarity" type="number" min="0" max="1" step="0.01" value="0.2"><p class="field-hint" id="vRagSimilarityHint"></p></div>
+    </div>
+    <div class="checkbox-row"><input id="vRagOcr" type="checkbox" checked><label for="vRagOcr" data-i18n="rag.ocr">Recognize text in scanned pages locally</label></div>
+    <p class="field-hint" data-i18n="rag.saveHint">Save the agent settings before importing documents with new limits.</p>
+  </div>
+  <div class="panel">
+    <div class="field"><label for="vRagFiles" data-i18n="rag.upload">Upload documents</label><input id="vRagFiles" type="file" accept=".pdf,.epub,.txt,.md" multiple></div>
+    <div class="form-actions">
+      <button id="vRagUpload" type="button" class="button button-primary" data-i18n="rag.upload">Upload documents</button>
+      <button id="vRagCancelUpload" type="button" class="button" data-i18n="common.cancel" hidden>Cancel</button>
+      <button id="vRagImport" type="button" class="button" data-i18n="rag.import">Import files from rag/inbox</button>
+      <button id="vRagRefresh" type="button" class="button" data-i18n="rag.refresh">Refresh</button>
+    </div>
+    <p id="vRagProgress" class="field-hint" role="status"></p>
+    <div id="vRagImportErrors" role="alert"></div>
+    <p id="vRagTotals" class="field-hint"></p>
+    <div id="vRagDocuments"></div>
+    <div class="form-actions">
+      <button id="vRagPrevious" type="button" class="button" data-i18n="rag.previous">Previous</button>
+      <button id="vRagNext" type="button" class="button" data-i18n="rag.next">Next</button>
+    </div>
+  </div>
+  <div class="panel">
+    <label for="vRagQuery" data-i18n="rag.search">Search the library</label>
+    <textarea id="vRagQuery" rows="2"></textarea>
+    <div class="field-row">
+      <div class="field"><label for="vRagFilterVersion" data-i18n="rag.version">Version</label><input id="vRagFilterVersion"></div>
+      <div class="field"><label for="vRagFilterLanguage" data-i18n="rag.language">Language</label><input id="vRagFilterLanguage"></div>
+    </div>
+    <button id="vRagSearch" type="button" class="button" data-i18n="rag.search">Search the library</button>
+    <div id="vRagSearchResults"></div>
+  </div>
+</section>

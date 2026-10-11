@@ -1,0 +1,40 @@
+<section class="tab-panel" data-agent-panel="scripts" hidden>
+  <div class="panel" id="vScriptsPanel" data-max-bytes="{{ vMaxScriptBytes }}">
+    <h2 class="panel-title" data-i18n="scripts.title">Scripts</h2>
+    <p class="panel-hint" id="vScriptsDirectory"></p>
+    <div class="scripts-toolbar">
+      <div class="field">
+        <label for="vScriptsSort" data-i18n="scripts.sort">Sort by</label>
+        <select id="vScriptsSort">
+          <option value="name-asc" data-i18n="scripts.nameAsc">Name (A–Z)</option>
+          <option value="name-desc" data-i18n="scripts.nameDesc">Name (Z–A)</option>
+          <option value="bytes-asc" data-i18n="scripts.sizeAsc">Size (smallest first)</option>
+          <option value="bytes-desc" data-i18n="scripts.sizeDesc">Size (largest first)</option>
+          <option value="modified-desc" data-i18n="scripts.modifiedDesc">Last modified (newest first)</option>
+          <option value="modified-asc" data-i18n="scripts.modifiedAsc">Last modified (oldest first)</option>
+        </select>
+      </div>
+      <button type="button" class="button" id="vNewScriptButton" data-i18n="scripts.new">New script</button>
+    </div>
+    <div id="vNewScriptEditor" class="script-new" hidden>
+      <div class="field">
+        <label for="vNewScriptName" data-i18n="scripts.name">Script name</label>
+        <input type="text" id="vNewScriptName" maxlength="64" dir="ltr"
+               autocomplete="off" spellcheck="false" placeholder="check.sh">
+        <p class="field-hint" data-i18n="scripts.nameHint">Use letters, digits, dots, dashes or underscores; start with a letter or digit.</p>
+      </div>
+      <div class="field">
+        <label for="vNewScriptCode" data-i18n="scripts.code">Code</label>
+        <textarea id="vNewScriptCode" class="script-code-input" spellcheck="false" dir="ltr"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="button button-primary" id="vCreateScriptButton" data-i18n="scripts.create">Create script</button>
+        <button type="button" class="button" id="vCancelScriptButton" data-i18n="common.cancel">Cancel</button>
+      </div>
+    </div>
+    <p id="vScriptsStatus" class="field-hint" role="status"></p>
+    <table class="script-table" aria-label="Scripts">
+      <tbody id="vScriptsList"></tbody>
+    </table>
+  </div>
+</section>

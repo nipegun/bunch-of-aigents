@@ -1,0 +1,16 @@
+{
+  "provider": "deepseek",
+  "documentation": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "models": [
+    {
+      "id": "deepseek-flash",
+      "context": "1M",
+      "note": "$0.3 in / $1.2 out per Mtok"
+    },
+    {
+      "id": "deepseek-v4-pro",
+      "context": "1M",
+      "note": "$1.32 in / $3.96 out per Mtok"
+    }
+  ]
+}

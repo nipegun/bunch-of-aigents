@@ -1,0 +1,138 @@
+{
+  "provider": "huggingface",
+  "documentation": "https://huggingface.co/inference/models",
+  "models": [
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Flash-0731:fastest",
+      "label": "DeepSeek-V4-Flash-0731:fastest"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Pro-0813:fastest",
+      "label": "DeepSeek-V4-Pro-0813:fastest"
+    },
+    {
+      "id": "google/gemma-4-26B-A4B-it:fastest",
+      "label": "gemma-4-26B-A4B-it:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "google/gemma-4-31B-it:fastest",
+      "label": "gemma-4-31B-it:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "inclusionAI/Ling-3.0-flash:fastest",
+      "label": "Ling-3.0-flash:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.5:fastest",
+      "label": "Kimi-K2.5:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.6:fastest",
+      "label": "Kimi-K2.6:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "moonshotai/Kimi-K3:fastest",
+      "label": "Kimi-K3:fastest",
+      "context": "1M"
+    },
+    {
+      "id": "openai/gpt-oss-120b:fastest",
+      "label": "gpt-oss-120b:fastest",
+      "context": "128K"
+    },
+    {
+      "id": "openai/gpt-oss-20b:fastest",
+      "label": "gpt-oss-20b:fastest",
+      "context": "128K"
+    },
+    {
+      "id": "Qwen/Qwen3-14B:fastest",
+      "label": "Qwen3-14B:fastest",
+      "context": "40K"
+    },
+    {
+      "id": "Qwen/Qwen3-30B-A3B:fastest",
+      "label": "Qwen3-30B-A3B:fastest",
+      "context": "40K"
+    },
+    {
+      "id": "Qwen/Qwen3-32B:fastest",
+      "label": "Qwen3-32B:fastest",
+      "context": "40K"
+    },
+    {
+      "id": "Qwen/Qwen3-8B:fastest",
+      "label": "Qwen3-8B:fastest",
+      "context": "40K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-122B-A10B:fastest",
+      "label": "Qwen3.5-122B-A10B:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-27B:fastest",
+      "label": "Qwen3.5-27B:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-35B-A3B:fastest",
+      "label": "Qwen3.5-35B-A3B:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-397B-A17B:fastest",
+      "label": "Qwen3.5-397B-A17B:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.5-9B:fastest",
+      "label": "Qwen3.5-9B:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.6-27B:fastest",
+      "label": "Qwen3.6-27B:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.6-35B-A3B:fastest",
+      "label": "Qwen3.6-35B-A3B:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "Qwen/Qwen3.8-2.4T-A95B:fastest",
+      "label": "Qwen3.8-2.4T-A95B:fastest",
+      "context": "1.01M"
+    },
+    {
+      "id": "Qwen/Qwen3.8-27B:fastest",
+      "label": "Qwen3.8-27B:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "stepfun-ai/Step-3.7-Flash:fastest",
+      "label": "Step-3.7-Flash:fastest"
+    },
+    {
+      "id": "tencent/Hy3:fastest",
+      "label": "Hy3:fastest",
+      "context": "256K"
+    },
+    {
+      "id": "thinkingmachines/Inkling-Small:fastest",
+      "label": "Inkling-Small:fastest",
+      "context": "1M"
+    },
+    {
+      "id": "thinkingmachines/Inkling:fastest",
+      "label": "Inkling:fastest",
+      "context": "1M"
+    }
+  ]
+}

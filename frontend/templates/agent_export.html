@@ -1,0 +1,42 @@
+<section class="tab-panel" data-agent-panel="export" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="export.title">Export</h2>
+    <p class="panel-hint" data-i18n="export.hint">Downloads this agent as a .zip that the + button can import, here or on another installation. Its configuration, its system prompt and its schedules always go in; the rest only if you tick it.</p>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vExportMemory">
+      <label for="vExportMemory">
+        <div data-i18n="export.memory">Memory</div>
+        <div class="field-hint" id="vExportMemoryHint"></div>
+      </label>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vExportProvider">
+      <label for="vExportProvider">
+        <div data-i18n="export.provider">Provider and model</div>
+        <div class="field-hint" id="vExportProviderHint"></div>
+      </label>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vExportRag">
+      <label for="vExportRag">
+        <div data-i18n="export.rag">Library documents</div>
+        <div class="field-hint" id="vExportRagHint"></div>
+      </label>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="vExportHome">
+      <label for="vExportHome">
+        <div data-i18n="export.home">Files in its home</div>
+        <div class="field-hint" id="vExportHomeHint"></div>
+      </label>
+    </div>
+    <details id="vExportHomeList" class="export-file-list" hidden>
+      <summary data-i18n="export.homeList">Which files</summary>
+      <ul id="vExportHomeFiles"></ul>
+    </details>
+    <p class="field-hint" data-i18n="export.never">Never included, whatever you tick: API keys, the agent's own token, channel credentials, its chat, its run journal, its browser sessions and the hidden files of its home. From its crontab only the schedules that run the agent travel, not other commands.</p>
+    <div class="form-actions">
+      <button type="button" class="button button-primary" id="vExportButton" data-i18n="export.download">Download .zip</button>
+    </div>
+  </div>
+</section>

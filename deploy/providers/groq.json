@@ -1,0 +1,36 @@
+{
+  "provider": "groq",
+  "documentation": "https://console.groq.com/docs/models",
+  "models": [
+    {
+      "id": "openai/gpt-oss-20b",
+      "label": "gpt-oss-20b",
+      "context": "128K",
+      "note": "$0.03 in / $0.13 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "label": "gpt-oss-120b",
+      "context": "128K",
+      "note": "$0.037 in / $0.17 out per Mtok"
+    },
+    {
+      "id": "openai/gpt-oss-safeguard-20b",
+      "label": "gpt-oss-safeguard-20b",
+      "context": "128K",
+      "note": "$0.075 in / $0.3 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.6-27b",
+      "label": "qwen3.6-27b",
+      "context": "256K",
+      "note": "$0.6 in / $3.6 out per Mtok"
+    },
+    {
+      "id": "qwen/qwen3.8-27b",
+      "label": "qwen3.8-27b",
+      "context": "1M",
+      "note": "$0.425 in / $2.55 out per Mtok"
+    }
+  ]
+}

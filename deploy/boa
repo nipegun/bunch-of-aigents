@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Bunch of AIgents administration command.
+
+set -euo pipefail
+
+fCleanup() {
+  :
+}
+
+trap fCleanup EXIT
+
+fMain() {
+  exec /opt/boa/venv/bin/python3 -I -B /opt/boa/webapp/backend/core/admin_cli.py "$@"
+}
+
+if ! fMain "$@"; then
+  printf '%s\n' "The BoA command could not start. Check the installation in /opt/boa." >&2
+  exit 1
+fi

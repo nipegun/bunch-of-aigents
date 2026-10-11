@@ -1,0 +1,67 @@
+<section class="tab-panel" data-panel="audio" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="audio.title">Audio transcription</h2>
+    <p class="panel-hint" data-i18n="audio.hint">Voice notes and audio sent to an agent in Telegram are converted to text before the agent answers.</p>
+    <form id="vAudioForm">
+      <div class="field">
+        <label for="vAudioEngine" data-i18n="audio.engine">Transcription engine</label>
+        <select id="vAudioEngine">
+          <option value="disabled" data-i18n="audio.disabled">Disabled</option>
+          <option value="local" data-i18n="audio.local">Local · whisper.cpp</option>
+          <option value="api" data-i18n="audio.api">Provider API</option>
+        </select>
+      </div>
+      <div id="vAudioLocal" hidden>
+        <p class="field-hint" data-i18n="audio.localHint">Audio is transcribed on this server. Larger models need more memory and processing time.</p>
+        <p id="vAudioInstallation" class="field-hint" role="status"></p>
+        <div class="field">
+          <label for="vAudioLocalModel" data-i18n="audio.model">Model</label>
+          <select id="vAudioLocalModel"></select>
+          <p id="vAudioModelStatus" class="field-hint" role="status"></p>
+          <button type="button" class="button" id="vAudioDownload" data-i18n="audio.download">Download model</button>
+          <progress id="vAudioProgress" max="100" value="0" hidden></progress>
+        </div>
+        <div class="field">
+          <label for="vAudioThreads" data-i18n="audio.threads">CPU threads</label>
+          <input id="vAudioThreads" type="number" min="1" max="32" value="2">
+        </div>
+      </div>
+      <div id="vAudioApi" hidden>
+        <p class="field-hint" data-i18n="audio.apiHint">Audio is sent to the selected provider. Only compatible providers with a saved API key are listed.</p>
+        <p id="vAudioNoProviders" class="field-hint" data-i18n="audio.noProviders" hidden>Save an API key for a transcription provider in API keys first.</p>
+        <div class="field">
+          <label for="vAudioProvider" data-i18n="audio.provider">Provider</label>
+          <select id="vAudioProvider"></select>
+        </div>
+        <div class="field">
+          <label for="vAudioApiModel" data-i18n="audio.model">Model</label>
+          <input id="vAudioApiModel" type="text" maxlength="200" list="vAudioApiModels" autocomplete="off" autocapitalize="none" spellcheck="false">
+          <datalist id="vAudioApiModels"></datalist>
+          <p class="field-hint" data-i18n="audio.modelHint">Choose a suggestion or enter another transcription model offered by this provider.</p>
+        </div>
+      </div>
+      <div id="vAudioOptions" hidden>
+        <div class="field">
+          <label for="vAudioLanguage" data-i18n="audio.language">Audio language</label>
+          <input id="vAudioLanguage" type="text" value="auto" maxlength="4" pattern="[aA][uU][tT][oO]|[a-zA-Z]{2,3}" list="vAudioLanguages" autocomplete="off" autocapitalize="none" spellcheck="false">
+          <datalist id="vAudioLanguages"><option value="auto"></option><option value="es"></option><option value="en"></option><option value="fr"></option><option value="de"></option><option value="pt"></option><option value="it"></option><option value="zh"></option><option value="ja"></option></datalist>
+          <p class="field-hint" data-i18n="audio.languageHint">Use auto to detect the language, or a code such as es or en. Some providers always detect it automatically.</p>
+        </div>
+        <div class="field">
+          <label for="vAudioMaxSeconds" data-i18n="audio.maxSeconds">Maximum audio duration (seconds)</label>
+          <input id="vAudioMaxSeconds" type="number" min="30" max="3600" value="600">
+        </div>
+        <div class="checkbox-row">
+          <input id="vAudioKeep" type="checkbox" checked>
+          <div>
+            <label for="vAudioKeep" data-i18n="audio.keep">Keep audio for playback in the web chat</label>
+            <p class="field-hint" data-i18n="audio.keepHint">When disabled, only the transcript is kept. Clearing the chat also deletes its saved audio.</p>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="button button-primary" data-i18n="common.save">Save</button>
+      <button type="button" class="button" id="vAudioDiscard" data-discard="audio" data-i18n="common.discard">Discard changes</button>
+      <span id="vAudioSaved" class="field-hint" role="status"></span>
+    </form>
+  </div>
+</section>

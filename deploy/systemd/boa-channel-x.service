@@ -1,0 +1,29 @@
+[Unit]
+Description=Bunch of AIgents - X direct-message listener
+Documentation=https://github.com/nipegun/bunch-of-aigents
+After=network.target boa-exec.service
+Requires=boa-exec.service
+PartOf=boa-web.service
+
+[Service]
+Type=simple
+User=boa
+Group=boa
+WorkingDirectory=/opt/boa/webapp
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=BOA_BASE_DIR=/opt/boa
+ExecStart=/opt/boa/venv/bin/python3 -m backend.core.x_listener
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+RestrictSUIDSGID=yes
+ReadWritePaths=/opt/boa/config /opt/boa/db /opt/boa/logs
+
+[Install]
+WantedBy=multi-user.target

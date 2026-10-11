@@ -1,0 +1,27 @@
+<section class="tab-panel" data-panel="rag" hidden>
+  <div class="panel">
+    <h2 class="panel-title" data-i18n="rag.localEngine">Local document processing</h2>
+    <p class="panel-hint" data-i18n="rag.localHint">Text extraction, OCR and embeddings run on this server. Documents are never sent to a vectorization provider.</p>
+    <p id="vRagRuntimeStatus" class="field-hint" role="status"></p>
+    <form id="vRagRuntimeForm">
+      <div class="field">
+        <label for="vRagModel" data-i18n="rag.model">Embedding model</label>
+        <select id="vRagModel"></select>
+        <p id="vRagModelInfo" class="field-hint"></p>
+        <p id="vRagModelStatus" class="field-hint" role="status"></p>
+        <div class="form-actions">
+          <button type="button" class="button" id="vRagModelDownload" data-i18n="rag.modelDownload">Download model</button>
+        </div>
+        <progress id="vRagModelProgress" max="100" value="0" hidden></progress>
+        <p class="field-hint" data-i18n="rag.modelHint">The same model serves every agent. Changing it indexes every document of every agent again; until each one is done, it is found only by the words of a question.</p>
+      </div>
+      <div class="field-row">
+        <div class="field"><label for="vRagThreads" data-i18n="rag.threads">Embedding CPU threads</label><input id="vRagThreads" type="number" min="1" max="32" value="2" required></div>
+        <div class="field"><label for="vRagWorkers"><span data-i18n="rag.workers">Concurrent indexing jobs</span> <span class="field-label-note" data-i18n="rag.workersMemory">(4GB of RAM each)</span></label><input id="vRagWorkers" type="number" min="1" max="4" value="1" required></div>
+        <div class="field"><label for="vRagDefaultLanguages" data-i18n="rag.languages">OCR languages</label><input id="vRagDefaultLanguages" value="eng+spa" required></div>
+      </div>
+      <button type="submit" class="button button-primary" data-i18n="common.save">Save</button>
+      <button type="button" class="button" id="vRagRuntimeDiscard" data-discard="rag" data-i18n="common.discard">Discard changes</button>
+    </form>
+  </div>
+</section>

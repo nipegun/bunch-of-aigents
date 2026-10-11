@@ -1,0 +1,58 @@
+{
+  "provider": "fireworks",
+  "documentation": "https://fireworks.ai/models?modelTypes=Serverless&serverless=true",
+  "models": [
+    {
+      "id": "accounts/fireworks/models/gpt-oss-20b",
+      "label": "gpt-oss-20b"
+    },
+    {
+      "id": "accounts/fireworks/models/gpt-oss-120b",
+      "label": "gpt-oss-120b"
+    },
+    {
+      "id": "accounts/fireworks/models/deepseek-v4-pro",
+      "label": "deepseek-v4-pro"
+    },
+    {
+      "id": "accounts/fireworks/models/glm-5p2",
+      "label": "glm-5p2"
+    },
+    {
+      "id": "accounts/fireworks/models/inkling",
+      "label": "inkling"
+    },
+    {
+      "id": "accounts/fireworks/models/kimi-k2p6",
+      "label": "kimi-k2p6"
+    },
+    {
+      "id": "accounts/fireworks/models/kimi-k3",
+      "label": "kimi-k3"
+    },
+    {
+      "id": "accounts/fireworks/models/minimax-m3",
+      "label": "minimax-m3"
+    },
+    {
+      "id": "accounts/fireworks/models/muse-glimmer-30b",
+      "label": "muse-glimmer-30b"
+    },
+    {
+      "id": "accounts/fireworks/models/nemotron-3-ultra-nvfp4",
+      "label": "nemotron-3-ultra-nvfp4"
+    },
+    {
+      "id": "accounts/fireworks/models/nemotron-lightning-3p5-30b-a3b",
+      "label": "nemotron-lightning-3p5-30b-a3b"
+    },
+    {
+      "id": "accounts/fireworks/models/qwen3p7-plus",
+      "label": "qwen3p7-plus"
+    },
+    {
+      "id": "accounts/fireworks/models/qwen3p8-max",
+      "label": "qwen3p8-max"
+    }
+  ]
+}

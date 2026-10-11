@@ -1,0 +1,24 @@
+[Unit]
+Description=Bunch of AIgents - Document indexing queue
+After=boa-exec.service boa-embeddings.service
+Requires=boa-exec.service
+
+[Service]
+Type=simple
+User=boa
+Group=boa
+WorkingDirectory=/opt/boa/webapp
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+Environment=BOA_BASE_DIR=/opt/boa
+ExecStart=/opt/boa/venv/bin/python3 -m backend.core.rag_scheduler
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/boa/db /opt/boa/logs
+
+[Install]
+WantedBy=multi-user.target
